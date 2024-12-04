@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 /* reset */
 html {
   box-sizing: border-box;
@@ -18,7 +20,7 @@ body {
   height: 100vh;
   height: 100dvh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 h1,
@@ -53,6 +55,7 @@ a {
   color: inherit;
 }
 
-#texting {
-  @apply text-indigo-600;
+/* sidenav */
+#sidenav .nav-link.active {
+  background-color: #e5e5e5;
 }

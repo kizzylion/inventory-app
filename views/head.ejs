@@ -7,7 +7,16 @@
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
   <style type="text/tailwindcss">
-    
+    #sidenav .nav-link.active .content,
+    #sidenav .nav-link.active .content:hover {
+      @apply bg-indigo-600 text-white;
+    }
+    #sidenav .nav-link.active svg path{
+      @apply stroke-white;
+    }
+    #sidenav .nav-link .content:hover {
+      @apply bg-gray-100;
+    }
   </style>
   <title>Inventory App | <%= title %></title>
 </head>
