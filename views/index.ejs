@@ -18,8 +18,14 @@
                 <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
               </svg>
             </button>
+            <button id="close-toggle-sidenav" class="hidden lg:hidden text-gray-800 hover:text-gray-900 p-2 rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+              </svg>
+            </button>
         </header>
-        <nav class="flex absolute lg:relative lg:flex flex-col px-4 h-screen lg:h-fit w-[80%] lg:w-auto bg-white lg:bg-transparent mt-[4rem] lg:mt-0">
+        <nav id="sidenav-nav" class="flex absolute lg:relative lg:flex flex-col pt-10 lg:pt-0 px-4 h-screen lg:h-fit w-[80%] lg:w-auto bg-white lg:bg-transparent mt-[3rem] lg:mt-0 -translate-x-full lg:translate-x-0 transition-transform duration-300" aria-hidden="true">
+          
           <a href="/" class="nav-link active py-[2px] w-full">
             <div class="content flex items-center px-3 py-2 rounded">
                 <div class="text-and-icon flex items-center font-semibold">
@@ -95,5 +101,7 @@
         </nav>
     </div>
   </section>
+
+  
 </body>
 </html>
