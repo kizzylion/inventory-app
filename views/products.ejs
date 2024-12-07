@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/head", { title: "Products" }) %>
+<body class="bg-gray-100 flex flex-col min-h-screen overflow-hidden lg:flex-row">
+  <%- include("partials/nav", { active: "products" }) %>
+  <main class="w-full h-full flex flex-col items-start justify-start gap-5 lg:gap-8">
+    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8">
+      <div class="container gap-4 lg:gap-5 px-4 md:px-8 h-fit flex flex-col ">
+        <div id="breadcrumbs" class="flex items-center gap-2 h-fit">
+          <a href="/" class="text-xs lg:text-sm text-gray-500 hover:text-gray-900">Home</a>
+          <span class="text-xs lg:text-sm text-gray-500">&gt;</span>
+          <span class="text-xs lg:text-sm text-gray-900 font-medium">Products</span>
+        </div>
+        <%- include("partials/mainTitle", { title: "Products", subtitle: "Manage your products here" }) %>
+      </div>
+    </section>
+    <section id="filters" class="w-full h-fit flex flex-col items-start justify-start ">
+      <div class=" w-full h-fit flex flex-col px-4 md:px-8 gap-3">
+         <!-- filter and add product button -->
+         <div id="filterAndAddProduct" class="w-full h-fit flex items-center justify-between">
+          
+          <!-- filter AND clear button -->
+          <div id="filterAndClear" class="flex items-center justify-center gap-3">
+              <button id="filterButton" class="text-gray-500 flex items-center justify-center gap-2  text-sm text-nowrap hover:text-indigo-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                 <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                </svg>
+              Filter
+            </button>
+            <a href="/products" id="clearButton" class="<%= query.search || query.category || query.supplier ? 'flex' : 'hidden' %>  lg:flex text-gray-500 flex items-center justify-center gap-2  text-sm text-nowrap hover:text-red-500">
+              Clear
+            </a>
+          </div>  
+
+          <!-- add product button -->
+          <a href="/products/add" class="bg-indigo-500 text-white px-3 py-2 rounded-lg border flex border-gray-200 text-sm text-nowrap">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+           </svg>
+           New Product
+         </a>
+        </div>
+
+        <!-- filters bar -->
+        <div id="filtersBar" class="hidden bg-white w-full h-fit flex items-end justify-start border border-gray-200 p-4 md:p-6 rounded-lg gap-3">
+         
+          <form action="/products" onchange="this.submit()" method="get" class="actions flex items-center gap-3 w-full">
+            <div id="filtersSearch" class="w-full h-fit flex flex-col items-start justify-start">
+              <label for="search" class="text-sm text-gray-500 mb-1">Search</label>
+              <input type="text" id="search" class="w-full h-fit border border-gray-200 p-2 rounded-lg" placeholder="Search products" name="search" <%= query.search ? `value=${query.search}` : '' %>>
+            </div>
+            <div id="filtersCategory" class="w-full h-fit flex flex-col items-start justify-start">
+              <label for="category" class="text-sm text-gray-500 mb-1">Category</label>
+                <select id="category"  class="w-full h-fit border border-gray-200 p-2 rounded-lg" name="category">
+                <option <% if (!query.category) { %>selected<% } %> value="">All</option>
+                <% categories.forEach(category => { %>
+                  <option <% if (query.category == category.id) { %>selected<% } %> value="<%= category.id %>"><%= category.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div id="filtersSupplier" class="w-full h-fit flex flex-col items-start justify-start">
+              <label for="supplier" class="text-sm text-gray-500 mb-1">Supplier</label>
+              <select id="supplier" class="w-full h-fit border border-gray-200 p-2 rounded-lg" name="supplier">
+                <option <% if (!query.supplier) { %>selected<% } %> value="">All</option>
+                <% suppliers.forEach(supplier => { %>
+                  <option <% if (query.supplier == supplier.id) { %>selected<% } %> value="<%= supplier.id %>"><%= supplier.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            
+          </form>
+
+        </div>
+       
+      </div>
+    </section>
+
+
+    <section id="productsList" class="w-full h-fit flex flex-col items-start justify-start">
+      <div class="container h-fit flex flex-col px-4 md:px-8">
+        <div id="productsTable" class="w-full h-fit flex flex-col items-start justify-start">
+          <table class="w-full h-fit">
+            <thead class="w-full h-fit">
+              <tr class="w-full h-fit">
+                <th class="text-sm text-gray-500">Name</th>
+                <th class="text-sm text-gray-500">Category</th>
+                <th class="text-sm text-gray-500">Supplier</th>
+                <th class="text-sm text-gray-500">Price</th>
+                <th class="text-sm text-gray-500">Quantity</th>
+              </tr>
+            </thead>
+            <tbody class="w-full h-fit">
+              <% products.forEach(product => { %>
+                <tr class="w-full h-fit">
+                  <td class="text-sm text-gray-900"><%= product.name %></td>
+                  <td class="text-sm text-gray-900"><%= product.category %></td>
+                  <td class="text-sm text-gray-900"><%= product.supplier %></td>
+                  <td class="text-sm text-gray-900"><%= product.price %></td>
+                  <td class="text-sm text-gray-900"><%= product.quantity %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/filter.js"></script>
+</body>
+</html>
