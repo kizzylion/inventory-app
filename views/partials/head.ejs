@@ -17,6 +17,18 @@
     #sidenav .nav-link .content:hover {
       @apply bg-gray-100;
     }
+  
+    .table-header { 
+      @apply px-4 py-3 md:px-6 md:py-3 font-normal text-sm text-gray-500 bg-gray-200 border-b border-gray-200;
+    }
+    .table-data {
+      @apply bg-white px-4 py-3 md:px-6 md:py-4 border-b border-gray-200 text-sm text-gray-800;
+    }
+
+    .table-row:nth-child(even) .table-data {
+      @apply bg-gray-50 !important;
+    }
+
   </style>
   <script defer src="/js/script.js"></script>
   <title>Inventory App | <%= title %></title>

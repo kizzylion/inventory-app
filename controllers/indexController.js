@@ -26,6 +26,8 @@ const getProducts = async (req, res, next) => {
   // get array of suppliers.name and suppliers_id
   let suppliers = getArrayOfIdAndName(products, "supplier_id", "supplier");
 
+  console.table(products);
+
   res.render("products", {
     categories,
     suppliers,

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include("partials/head", { title: "Products" }) %>
-<body class="bg-gray-100 flex flex-col min-h-screen overflow-hidden lg:flex-row">
+<body class="bg-gray-100 flex relative flex-col h-screen w-screen max-w-screen lg:flex-row">
   <%- include("partials/nav", { active: "products" }) %>
-  <main class="w-full h-full flex flex-col items-start justify-start gap-5 lg:gap-8">
-    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8">
+  <main class="w-full  h-full relative flex flex-col items-start justify-start gap-5 lg:gap-8 overflow-x-hidden overflow-y-auto ">
+    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8 ">
       <div class="container gap-4 lg:gap-5 px-4 md:px-8 h-fit flex flex-col ">
         <div id="breadcrumbs" class="flex items-center gap-2 h-fit">
           <a href="/" class="text-xs lg:text-sm text-gray-500 hover:text-gray-900">Home</a>
@@ -14,8 +14,8 @@
         <%- include("partials/mainTitle", { title: "Products", subtitle: "Manage your products here" }) %>
       </div>
     </section>
-    <section id="filters" class="w-full h-fit flex flex-col items-start justify-start ">
-      <div class=" w-full h-fit flex flex-col px-4 md:px-8 gap-3">
+    <section id="filters" class="w-full max-w-4xl h-fit flex flex-col items-start justify-start">
+      <div class="w-full h-fit flex flex-col px-4 md:px-8 gap-3">
          <!-- filter and add product button -->
          <div id="filterAndAddProduct" class="w-full h-fit flex items-center justify-between">
           
@@ -75,28 +75,42 @@
       </div>
     </section>
 
-
-    <section id="productsList" class="w-full h-fit flex flex-col items-start justify-start">
-      <div class="container h-fit flex flex-col px-4 md:px-8">
+    <section id="productsList" class="w-full max-w-4xl h-fit flex flex-col items-start justify-start ">
+      <div class="w-full h-fit flex flex-col px-4 md:px-8">
         <div id="productsTable" class="w-full h-fit flex flex-col items-start justify-start">
-          <table class="w-full h-fit">
-            <thead class="w-full h-fit">
-              <tr class="w-full h-fit">
-                <th class="text-sm text-gray-500">Name</th>
-                <th class="text-sm text-gray-500">Category</th>
-                <th class="text-sm text-gray-500">Supplier</th>
-                <th class="text-sm text-gray-500">Price</th>
-                <th class="text-sm text-gray-500">Quantity</th>
+          <table class="w-full h-full flex relative flex-col bg-white rounded-lg overflow-auto">
+            <thead class="w-max min-w-full h-fit sticky top-0 z-20 bg-gray-200">
+              <tr class="w-full h-fit flex flex-row w-max ">
+                <th class="table-header text-sm text-gray-500 sticky left-0 z-[11] w-[10em]"> Name</th>
+                <th class="table-header text-sm text-gray-500 w-[3em] text-center">Id</th>
+                <th class="table-header text-sm text-gray-500 w-[10em] text-right">Price</th>
+                <th class="table-header text-sm text-gray-500 w-[5em] text-center">Quantity</th>
+                <th class="table-header text-sm text-gray-500 w-[10em]">Category</th>
+                <th class="table-header text-sm text-gray-500 w-[10em]">Supplier</th>
+                <th class="table-header text-sm text-gray-500 w-[10em]">Created on</th>
+                <th class="table-header text-sm text-gray-500 w-[10em]">Actions</th>
               </tr>
             </thead>
-            <tbody class="w-full h-fit">
+            <tbody class="w-max min-w-full h-full flex flex-col  ">
               <% products.forEach(product => { %>
-                <tr class="w-full h-fit">
-                  <td class="text-sm text-gray-900"><%= product.name %></td>
-                  <td class="text-sm text-gray-900"><%= product.category %></td>
-                  <td class="text-sm text-gray-900"><%= product.supplier %></td>
-                  <td class="text-sm text-gray-900"><%= product.price %></td>
-                  <td class="text-sm text-gray-900"><%= product.quantity %></td>
+                <tr class="table-row w-fit h-fit flex flex-row w-max min-w-full ">
+                  <td class="table-data text-sm text-gray-900 sticky left-0 z-10 w-[10em]"><%= product.name %></td>
+                  <td class="table-data text-sm text-gray-900 w-[3em] text-center"><%= `${product.id}` %></td>
+                  <td class="table-data text-sm text-gray-900 w-[10em] text-right"><%= `$ ${product.price}` %></td>
+                  <td class="table-data text-sm text-gray-900 w-[5em] text-right"><%= product.quantity %></td>
+                  <td class="table-data text-sm text-gray-900 w-[10em]"><%= product.category %></td>
+                  <td class="table-data text-sm text-gray-900 w-[10em]"><%= product.supplier %></td>
+                  <!-- date created  dd/mm/yy example 07/12/24 -->
+                   <td class="table-data text-sm text-gray-900 w-[10em]"><%= new Date(product.date_created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })  %></td>
+                  <!-- edit and delete buttons -->
+                  <td class="table-data text-sm text-gray-900 w-[10em] gap-2">
+                    <!-- view button -->
+                    <a href="/products/view/<%= product.id %>" class="text-indigo-500 flex w-fit items-center justify-center gap-1 hover:text-indigo-600">View</a>
+                    <!-- edit button -->
+                    <a href="/products/edit/<%= product.id %>" class="text-indigo-500 flex w-fit items-center justify-center gap-1 hover:text-indigo-600">Edit</a>
+                    <!-- delete button -->
+                    <a href="/products/delete/<%= product.id %>" class="text-red-500 flex w-fit items-center justify-center gap-1 hover:text-red-600">Delete</a>
+                  </td>
                 </tr>
               <% }) %>
             </tbody>
@@ -104,6 +118,7 @@
         </div>
       </div>
     </section>
+  
   </main>
 
   <script src="/js/filter.js"></script>
