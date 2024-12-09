@@ -13,7 +13,7 @@ const getAllProducts = async () => {
 };
 
 // get total pages
-const getTotalPages = async () => {
+const getTotalPages = async (query) => {
   const result = await pool.query("SELECT COUNT(*) FROM items");
   return Math.ceil(result.rows[0].count / 10);
 };
@@ -33,6 +33,26 @@ const getAllProductsWithCategoryAndSupplier = async (page = 1, limit = 10) => {
   );
 
   return result.rows;
+};
+
+const getCountTotalSearchItems = async (query) => {
+  let result = await pool.query(
+    "SELECT items.*, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id"
+  );
+  result.rows = result.rows.filter((item) => {
+    if (query.search) {
+      return item.name.toLowerCase().includes(query.search.toLowerCase());
+    }
+    if (query.category) {
+      return item.category_id == query.category;
+    }
+    if (query.supplier) {
+      return item.supplier_id == query.supplier;
+    }
+    return item;
+  });
+
+  return Math.ceil(result.rows.length / 10);
 };
 
 // search products
@@ -60,6 +80,31 @@ const getSearchItems = async (query, page = 1, limit = 10) => {
   return result.rows;
 };
 
+// create product
+const createProduct = async (
+  productName,
+  productPrice,
+  quantity,
+  category,
+  supplier,
+  description,
+  image
+) => {
+  const result = await pool.query(
+    "INSERT INTO items (name, price, quantity, category_id, supplier_id, description, image) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+    [
+      productName,
+      productPrice,
+      quantity,
+      category,
+      supplier,
+      description,
+      image,
+    ]
+  );
+  return result.rows[0];
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -67,4 +112,6 @@ module.exports = {
   getAllProductsWithCategoryAndSupplier,
   getSearchItems,
   getTotalPages,
+  getCountTotalSearchItems,
+  createProduct,
 };

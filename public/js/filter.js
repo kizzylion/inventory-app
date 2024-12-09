@@ -1,7 +1,13 @@
-const filterButton = document.getElementById("filterButton");
+const handleFilterButton = () => {
+  const filterButton = document.getElementById("filterButton");
 
-const filtersBar = document.getElementById("filtersBar");
+  const filtersBar = document.getElementById("filtersBar");
 
-filterButton.addEventListener("click", () => {
-  filtersBar.classList.toggle("hidden");
+  filterButton.addEventListener("click", () => {
+    filtersBar.classList.toggle("hidden");
+  });
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  handleFilterButton();
 });

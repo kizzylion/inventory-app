@@ -1,9 +1,8 @@
 const {
-  getAllCategories,
-  getAllSuppliers,
   getAllProductsWithCategoryAndSupplier,
   getSearchItems,
   getTotalPages,
+  getCountTotalSearchItems,
 } = require("../db/db_utilities");
 const { getArrayOfIdAndName } = require("../public/js/utilities.mjs");
 
@@ -17,7 +16,6 @@ const getProducts = async (req, res, next) => {
   let page = req.query.page || 1;
   let limit = req.query.limit || 10;
   let currentPage = parseInt(page);
-  console.log(currentPage, "currentPage");
 
   // console.log(req.query);
   // if there are query parameters, redirect to the search route
@@ -48,20 +46,17 @@ const getSearchProducts = async (req, res) => {
   let page = req.query.page || 1;
   let limit = req.query.limit || 10;
   let currentPage = parseInt(page);
-  console.log(currentPage, "currentPage");
 
   const products = await getSearchItems(req.query, currentPage, limit);
 
   let allProducts = await getAllProductsWithCategoryAndSupplier();
-  let totalPages = await getTotalPages();
+  let totalPages = await getCountTotalSearchItems(req.query);
 
   // get array of distinct categories.name and categories_id from all products
   let categories = getArrayOfIdAndName(allProducts, "category_id", "category");
 
   // get array of distinct suppliers.name and suppliers_id
   let suppliers = getArrayOfIdAndName(allProducts, "supplier_id", "supplier");
-
-  console.log(req.query);
 
   res.render("products", {
     categories,
