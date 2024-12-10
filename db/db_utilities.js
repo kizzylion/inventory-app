@@ -2,7 +2,7 @@ const pool = require("./pool");
 
 // get all categories
 const getAllCategories = async () => {
-  const result = await pool.query("SELECT * FROM categories");
+  const result = await pool.query("SELECT * FROM categories ORDER BY name ASC");
   return result.rows;
 };
 
@@ -20,7 +20,7 @@ const getTotalPages = async (query) => {
 
 // get all suppliers
 const getAllSuppliers = async () => {
-  const result = await pool.query("SELECT * FROM suppliers");
+  const result = await pool.query("SELECT * FROM suppliers ORDER BY name ASC");
   return result.rows;
 };
 
@@ -114,6 +114,23 @@ const getItemById = async (id) => {
   return result.rows[0];
 };
 
+// create category
+const addCategory = async (name, description, image) => {
+  const query =
+    "INSERT INTO categories (name, description, image) VALUES ($1, $2, $3)";
+  const value = [name, description, image];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
+// delete category
+const deleteCategory = async (id) => {
+  const query = "DELETE FROM categories WHERE id = $1";
+  const value = [id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -124,4 +141,6 @@ module.exports = {
   getCountTotalSearchItems,
   createProduct,
   getItemById,
+  addCategory,
+  deleteCategory,
 };

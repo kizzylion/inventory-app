@@ -76,8 +76,6 @@ const getSearchProducts = async (req, res) => {
   // get array of distinct suppliers.name and suppliers_id
   let suppliers = getArrayOfIdAndName(allProducts, "supplier_id", "supplier");
 
-  console.log(products);
-
   res.render("products", {
     categories,
     suppliers,

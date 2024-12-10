@@ -4,6 +4,7 @@ export const getArrayOfIdAndName = (objects, key, name) => {
     if (!acc.some((cat) => cat.id === item[key])) {
       acc.push({ id: item[key], name: item[name] });
     }
+    acc.sort((a, b) => a.name.localeCompare(b.name));
     return acc;
   }, []);
 };
