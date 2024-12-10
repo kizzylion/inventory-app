@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/head", { title: "Product Details " + product.name }) %>
+<body class="bg-gray-100 flex relative flex-col h-dvh w-screen max-w-screen lg:flex-row">
+  <%- include("partials/nav", { active: "products" }) %>
+  <main class="w-full  h-full relative flex flex-col items-start justify-start gap-5 lg:gap-8 overflow-x-hidden overflow-y-auto ">
+    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8 ">
+      <div class="container gap-4 lg:gap-5 px-4 md:px-8 h-fit flex flex-col ">
+        <div id="breadcrumbs" class="flex items-center gap-2 h-fit">
+          <a href="/" class="text-xs lg:text-sm text-gray-500 hover:text-gray-900">Home</a>
+          <span class="text-xs lg:text-sm text-gray-500">&gt;</span>
+          <a href="/products" class="text-xs lg:text-sm text-gray-500 font-medium">Products</a>
+          <span class="text-xs lg:text-sm text-gray-500">&gt;</span>
+          <span class="text-xs lg:text-sm text-gray-900 font-medium"><%= product.name %></span>
+        </div>
+        <%- include("partials/mainTitle", { title: product.name, subtitle: product.description }) %>
+      </div>
+    </section>
+    
+
+    <section id="productsList" class="w-full max-w-4xl h-fit flex flex-col items-start justify-start ">
+      <div class="w-full h-fit flex flex-col px-4 md:px-8">
+        <!-- display product image -->
+        <div class="w-1/2 aspect-[16/9] flex flex-col items-start justify-start">
+            <img src="data:image/jpeg;base64,<%= product.image_base64 %>" alt="<%= product.name %>" class="w-auto h-full aspect-square object-cover border border-gray-300 rounded-md">
+        </div>
+        <div id="productsTable" class="w-full h-fit flex flex-col items-start justify-start">
+            <!-- details info -->
+            <div class="@container w-full h-full flex flex-col  overflow-auto py-4">
+                <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-4 mb-4">
+                    <label for="dateCreated" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Date created
+                        <input type="text" id="dateCreated" value="<%= product.date_created.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="productId" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Product ID
+                        <input type="text" id="productId" value="<%= product.id %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="productName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Product Name
+                        <input type="text" id="productName" value="<%= product.name %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="productPrice" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Product Price
+                        <input type="text" id="productPrice" value="<%= product.price %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="quantity" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Quantity
+                        <input type="text" id="quantity" value="<%= product.quantity %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="categoryName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Category Name
+                        <input type="text" id="categoryName" value="<%= product.category %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="supplierName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Supplier Name
+                        <input type="text" id="supplierName" value="<%= product.supplier %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="description" class="w-full h-fit flex flex-col items-start justify-start text-gray-700 col-span-2">Description
+                        <!-- text area no resize -->
+                        <textarea type="text" id="description" rows="5" readonly  class="w-full h-fit border resize-none border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 resize-none"><%= product.description %></textarea>
+                    </label>
+                </div>
+                <!-- <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-3 gap-4">
+                    <label for="inventory" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Inventory
+                        <input type="text" id="inventory" value="<%= product.quantity %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="store1-inventory" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Store 1
+                        <input type="text" id="store1-inventory" value="10" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                    <label for="store2-inventory" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Store 2
+                        <input type="text" id="store2-inventory" value="10" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
+                </div> -->
+            </div>
+        </div>
+      </div>
+    </section>
+
+    
+  </main>
+
+
+  <script src="/js/filter.js"></script>
+</body>
+</html>

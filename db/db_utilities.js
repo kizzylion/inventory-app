@@ -36,7 +36,7 @@ const getAllProductsWithCategoryAndSupplier = async (page = 1, limit = 10) => {
 
 const getCountTotalSearchItems = async (query) => {
   let result = await pool.query(
-    "SELECT items.*, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id"
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id"
   );
   result.rows = result.rows.filter((item) => {
     if (query.search) {
@@ -105,6 +105,15 @@ const createProduct = async (
   return result.rows[0];
 };
 
+// get item by id
+const getItemById = async (id) => {
+  let result = await pool.query(
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id WHERE items.id = $1",
+    [id]
+  );
+  return result.rows[0];
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -114,4 +123,5 @@ module.exports = {
   getTotalPages,
   getCountTotalSearchItems,
   createProduct,
+  getItemById,
 };

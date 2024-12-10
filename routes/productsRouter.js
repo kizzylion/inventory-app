@@ -30,6 +30,8 @@ productRouter.get("/", productsController.getSearchProducts);
 
 productRouter.get("/new", productsController.getNewProduct);
 
+productRouter.get("/view/:id", productsController.getProductById);
+
 productRouter.post(
   "/new",
   upload.single("image"),

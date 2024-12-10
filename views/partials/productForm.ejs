@@ -33,8 +33,9 @@
                 <label for="image" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">UploadImage
                      <input type="file" id="image" name="image" accept="image/*" class="hidden w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
 
-                    <div  class="w-[100px] h-[56px] border border-gray-300 rounded-md text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                        <img id="imagePreview" src="" alt="Image Preview" class="w-full h-full object-cover">
+                    <div  class="w-[100px] h-[56px] aspect-[16/9] flex items-center justify-center border border-gray-300 rounded-md text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent object-cover cursor-pointer">
+                        <!-- if input is empty  show image placeholder -->
+                        <img id="imagePreview" src="/images/image-fill.svg" alt="Image Preview" class=" h-[70%] mx-auto mt-auto mb-auto object-cover">
                     </div>
                 </label>
 

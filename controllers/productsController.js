@@ -4,6 +4,7 @@ const {
   getTotalPages,
   getCountTotalSearchItems,
   createProduct,
+  getItemById,
 } = require("../db/db_utilities");
 const { body, validationResult } = require("express-validator");
 const { getArrayOfIdAndName } = require("../public/js/utilities.mjs");
@@ -138,10 +139,16 @@ const postNewProduct = async (req, res) => {
   res.redirect(`/products?page=${totalPages}`);
 };
 
+const getProductById = async (req, res) => {
+  const product = await getItemById(req.params.id);
+  res.render("productDetails", { product });
+};
+
 module.exports = {
   getProducts,
   getSearchProducts,
   getNewProduct,
   postNewProduct,
   validateNewProduct,
+  getProductById,
 };
