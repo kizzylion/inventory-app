@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const multer = require("multer");
 
 dotenv.config();
 
@@ -9,6 +10,7 @@ const indexRouter = require("./routes/indexRouter");
 const productsRouter = require("./routes/productsRouter");
 
 app.use(express.static("public"));
+
 app.set("view engine", "ejs");
 app.set("views", "./views");
 app.use(express.urlencoded({ extended: true }));

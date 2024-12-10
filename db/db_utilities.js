@@ -27,8 +27,7 @@ const getAllSuppliers = async () => {
 //get all products with category and supplier
 const getAllProductsWithCategoryAndSupplier = async (page = 1, limit = 10) => {
   const result = await pool.query(
-    //GET ALL ITEMS THE CATEGORY NAMES AND SUPPLIER NAMES AS WELL
-    "SELECT items.*, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id ORDER BY items.id ASC LIMIT $1 OFFSET $2",
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id ORDER BY items.id ASC LIMIT $1 OFFSET $2",
     [limit, (page - 1) * limit]
   );
 
@@ -61,7 +60,7 @@ const getSearchItems = async (query, page = 1, limit = 10) => {
   // convert search to lowercase and add % to the beginning and end of the search string
 
   let result = await pool.query(
-    "SELECT items.*, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id LIMIT $1 OFFSET $2",
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id LIMIT $1 OFFSET $2",
     [limit, (page - 1) * limit]
   );
   result.rows = result.rows.filter((item) => {
@@ -90,18 +89,19 @@ const createProduct = async (
   description,
   image
 ) => {
-  const result = await pool.query(
-    "INSERT INTO items (name, price, quantity, category_id, supplier_id, description, image) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-    [
-      productName,
-      productPrice,
-      quantity,
-      category,
-      supplier,
-      description,
-      image,
-    ]
-  );
+  const query =
+    "INSERT INTO items (name, price, quantity, category_id, supplier_id, description, image) VALUES ($1, $2, $3, $4, $5, $6, $7)";
+  const value = [
+    productName,
+    productPrice,
+    quantity,
+    category,
+    supplier,
+    description,
+    image,
+  ];
+
+  const result = await pool.query(query, value);
   return result.rows[0];
 };
 

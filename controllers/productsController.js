@@ -75,6 +75,8 @@ const getSearchProducts = async (req, res) => {
   // get array of distinct suppliers.name and suppliers_id
   let suppliers = getArrayOfIdAndName(allProducts, "supplier_id", "supplier");
 
+  console.log(products);
+
   res.render("products", {
     categories,
     suppliers,
@@ -99,6 +101,7 @@ const getNewProduct = async (req, res) => {
 
 const postNewProduct = async (req, res) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
@@ -110,8 +113,14 @@ const postNewProduct = async (req, res) => {
     category,
     supplier,
     description,
-    image,
   } = req.body;
+
+  // Handle optional image upload
+  let base64Image = null;
+  if (req.file) {
+    // Just convert the buffer to base64, don't add the prefix
+    base64Image = req.file.buffer.toString("base64");
+  }
 
   const product = await createProduct(
     productName,
@@ -120,12 +129,13 @@ const postNewProduct = async (req, res) => {
     category,
     supplier,
     description,
-    image
+    base64Image
   );
-  // alert the user that the product has been added
-  // req.flash("success", "Product added successfully");
 
-  res.redirect("/products");
+  let totalPages = await getTotalPages();
+
+  // redirect to the last page
+  res.redirect(`/products?page=${totalPages}`);
 };
 
 module.exports = {

@@ -1,17 +1,17 @@
 
 
 
-        <form action="/products/new" method="post" class=" @container w-full h-full flex flex-col py-4">
+        <form action="/products/new" method="post" enctype="multipart/form-data" class=" @container w-full h-full flex flex-col py-4">
             <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-8 mb-8">
                 
                 <label for="productName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Product Name
                     <input required placeholder="Product Name" type="text" id="productName" name="productName" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                 </label>
                 <label for="productPrice" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Product Price ($)
-                    <input required placeholder="Product Price" type="number" inputmode="numeric" step="0.01" id="productPrice" name="productPrice" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    <input required placeholder="Product Price" type="number" min="0" inputmode="numeric" step="0.01" id="productPrice" name="productPrice" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                 </label>
                 <label for="quantity" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Quantity
-                    <input required placeholder="Quantity" type="number" id="quantity" name="quantity" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    <input required placeholder="Quantity" type="number" id="quantity" min="0" name="quantity" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                 </label>
                 <label for="category" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Category Name
                     <select required placeholder="Select Category" id="category"  class="w-full h-fit border border-gray-300 p-2 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" name="category">
@@ -30,8 +30,8 @@
                       </select>
                 </label>
                 <!-- image -->
-                <label for="imageInput" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">UploadImage
-                     <input type="file" id="imageInput" name="image" class="hidden w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                <label for="image" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">UploadImage
+                     <input type="file" id="image" name="image" accept="image/*" class="hidden w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
 
                     <div  class="w-[100px] h-[56px] border border-gray-300 rounded-md text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                         <img id="imagePreview" src="" alt="Image Preview" class="w-full h-full object-cover">

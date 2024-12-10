@@ -1,5 +1,5 @@
 const imagePreview = document.getElementById("imagePreview");
-const imageInput = document.getElementById("imageInput");
+const imageInput = document.getElementById("image");
 
 imageInput.addEventListener("change", (e) => {
   const file = e.target.files[0];

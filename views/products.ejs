@@ -95,8 +95,14 @@
               <% products.forEach(product => { %>
                 <tr class="table-row w-fit h-fit flex flex-row w-max min-w-full overflow-visible relative">
                   <td class="table-data text-sm text-gray-900 sticky left-0 z-10 w-[10em]">
-                    <img src="data:image/jpeg;base64,<%= product.image %>" alt="<%= product.name %>" class="w-6 h-6 object-cover">
-                    <%= product.name %>
+                    <% if (product.image) { %>
+                      <div class="w-6 h-6 object-cover">
+                        <img src="data:image/jpeg;base64,<%= product.image_base64 %>" alt="<%= product.name %>" class="w-full h-full object-cover">
+                      </div>
+                      <p class="text-sm text-gray-500"><%= product.name %></p>
+                    <% } else { %>
+                      <p class="text-sm text-gray-500"><%= product.name %></p>
+                    <% } %>
                   </td>
                   <td class="table-data text-sm text-gray-900 w-[3em] text-center"><%= `${product.id}` %></td>
                   <td class="table-data text-sm text-gray-900 w-[10em] text-right"><%= `$ ${product.price}` %></td>
