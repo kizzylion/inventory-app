@@ -17,7 +17,14 @@ const initializeDb = async () => {
       `CREATE TABLE IF NOT EXISTS categories (id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE, description TEXT, image BYTEA, date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
     );
     await pool.query(
-      `CREATE TABLE IF NOT EXISTS suppliers (id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE, location VARCHAR(100), phone VARCHAR(15), email VARCHAR(100), date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
+      `CREATE TABLE suppliers (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        tel VARCHAR(15) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      );`
     );
 
     await pool.query(
@@ -48,7 +55,7 @@ const insertData = async () => {
     );
 
     await pool.query(
-      `INSERT INTO suppliers (name, phone, email, location) VALUES
+      `INSERT INTO suppliers (name, tel, email, location) VALUES
       ('TechHub Supplies', '+1234567890', 'techhub@example.com', '123 Tech Lane, Silicon Valley'),
       ('SmartParts Inc.', '+1112223333', 'support@smartparts.com', '456 Modern Ave, New York'),
       ('Gizmo Distributors', '+9876543210', 'contact@gizmo.com', '789 Innovation Road, Austin')
