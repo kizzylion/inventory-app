@@ -25,7 +25,7 @@ const initializeDb = async () => {
     location VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      );`
+      )`
     );
 
     await pool.query(
