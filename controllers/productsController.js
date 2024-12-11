@@ -5,6 +5,7 @@ const {
   getCountTotalSearchItems,
   createProduct,
   getItemById,
+  removeProduct,
 } = require("../db/db_utilities");
 const { body, validationResult } = require("express-validator");
 const { getArrayOfIdAndName } = require("../public/js/utilities.mjs");
@@ -142,6 +143,26 @@ const getProductById = async (req, res) => {
   res.render("productDetails", { product });
 };
 
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  const { deletePassword } = req.body;
+
+  if (!deletePassword) {
+    return res.status(400).send("Password is required");
+  }
+
+  if (deletePassword === process.env.ADMIN_PASSWORD) {
+    await removeProduct(id);
+
+    // get current page
+    let currentPage = req.query.page || 1;
+
+    res.redirect(`/products?page=${currentPage}`);
+  } else {
+    res.status(401).send("Unauthorized");
+  }
+};
+
 module.exports = {
   getProducts,
   getSearchProducts,
@@ -149,4 +170,5 @@ module.exports = {
   postNewProduct,
   validateNewProduct,
   getProductById,
+  deleteProduct,
 };

@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 const indexRouter = require("./routes/indexRouter");
 const productsRouter = require("./routes/productsRouter");
 const categoriesRouter = require("./routes/categoriesRouter");
+
 app.use(express.static("public"));
 
 app.set("view engine", "ejs");

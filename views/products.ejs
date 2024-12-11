@@ -81,20 +81,20 @@
           <table class="w-full h-full flex relative flex-col bg-white rounded-lg overflow-auto border border-gray-200">
             <thead class="w-max min-w-full h-fit sticky top-0 z-20 bg-gray-200">
               <tr class="w-max min-w-full h-fit flex flex-row ">
-                <th class="table-header text-sm text-gray-500 sticky left-0 z-[11] w-[10em]"> Name</th>
-                <th class="table-header text-sm text-gray-500 w-[3em] text-center">Id</th>
-                <th class="table-header text-sm text-gray-500 w-[10em] text-right">Price</th>
-                <th class="table-header text-sm text-gray-500 w-[5em] text-center">Qty</th>
-                <th class="table-header text-sm text-gray-500 w-[10em]">Category</th>
-                <th class="table-header text-sm text-gray-500 w-[10em]">Supplier</th>
-                <th class="table-header text-sm text-gray-500 w-[10em]">Created on</th>
-                <th class="table-header text-sm text-gray-500  w-[10em]">Actions</th>
+                <th class="table-header text-sm text-gray-500 sticky left-0 z-[11] w-[10em] max-w-[10em]"> Name</th>
+                <th class="table-header text-sm text-gray-500 w-[3em] max-w-[3em] text-center">Id</th>
+                <th class="table-header text-sm text-gray-500 w-[10em] max-w-[10em] text-right">Price</th>
+                <th class="table-header text-sm text-gray-500 w-[5em] max-w-[5em] text-right">Qty</th>
+                <th class="table-header text-sm text-gray-500 w-[10em] max-w-[10em] text-left">Category</th>
+                <th class="table-header text-sm text-gray-500 w-[10em] max-w-[10em] text-left">Supplier</th>
+                <th class="table-header text-sm text-gray-500 w-[10em] max-w-[10em] text-left">Created on</th>
+                <th class="table-header text-sm text-gray-500  w-[10em] max-w-[10em] text-center">Actions</th>
               </tr>
             </thead>
             <tbody class="w-max min-w-full h-full flex flex-col ">
               <% products.forEach(product => { %>
                   <tr class="table-row w-fit h-fit flex flex-row w-max min-w-full overflow-visible relative">
-                  <td class="table-data text-sm text-gray-900 sticky left-0 z-10 w-[10em]">
+                  <td class="table-data text-sm text-gray-900 sticky left-0 z-10 w-[10em] max-w-[10em]">
                     <% if (product.image) { %>
                       <a href="/products/view/<%= product.id %>" class="w-full h-fit flex items-center justify-start gap-2">
                         <div class="w-6 h-6 object-cover rounded-full">
@@ -117,15 +117,15 @@
                       </a>
                     <% } %>
                   </td>
-                  <td class="table-data text-sm text-gray-900 w-[3em] text-center"><%= `${product.id}` %></td>
-                  <td class="table-data text-sm text-gray-900 w-[10em] text-right"><%= `$ ${product.price}` %></td>
-                  <td class="table-data text-sm text-gray-900 w-[5em] text-right"><%= product.quantity %></td>
-                  <td class="table-data text-sm text-gray-900 w-[10em]"><%= product.category %></td>
-                  <td class="table-data text-sm text-gray-900 w-[10em]"><%= product.supplier %></td>
+                  <td class="table-data text-sm text-gray-900 w-[3em] max-w-[3em] text-center"><%= `${product.id}` %></td>
+                  <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em] text-right"><%= `$ ${product.price}` %></td>
+                  <td class="table-data text-sm text-gray-900 w-[5em] max-w-[5em] text-right"><%= product.quantity %></td>
+                  <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em]"><%= product.category %></td>
+                  <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em]"><%= product.supplier %></td>
                   <!-- date created  dd/mm/yy example 07/12/24 -->
-                   <td class="table-data text-sm text-gray-900 w-[10em]"><%= new Date(product.date_created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })  %></td>
+                   <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em]"><%= new Date(product.date_created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })  %></td>
                   <!-- edit and delete buttons -->
-                  <td class="table-data text-sm text-gray-900 w-[10em] gap-2  right-0 ">
+                  <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em] gap-2  right-0 ">
                     <div class=" w-fit h-fit flex items-center justify-center gap-3">
                         <!-- view button -->
                       <a href="/products/view/<%= product.id %>" class="text-indigo-500 flex w-fit items-center justify-center gap-1 hover:text-indigo-600">
@@ -141,12 +141,15 @@
                         </svg>
                       </a>
                       <!-- delete button -->
-                      <a href="/products/delete/<%= product.id %>" class="text-red-500 flex w-fit items-center justify-center gap-1 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                        </svg>
-                      </a>
+                      <form action="/products/delete/<%= product.id %>" method="post" class="text-red-500 flex w-fit items-center justify-center gap-1 hover:text-red-600">
+                        <input type="hidden" id="deletePassword<%= product.id %>" name="deletePassword">
+                        <button type="submit" onclick="return collectPassword(event, 'deletePassword<%= product.id %>')" id="deleteButton<%= product.id %>" class="text-red-500 flex w-fit items-center justify-center gap-1 hover:text-red-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                          </svg>
+                        </button>
+                      </form>
                     </div>
 
                       <!-- add vertical dots for more actions -->
@@ -189,5 +192,6 @@
    <%- include("partials/detailsModal") %>
 
   <script src="/js/filter.js"></script>
+  <script src="/js/collectPassword.js"></script>
 </body>
 </html>

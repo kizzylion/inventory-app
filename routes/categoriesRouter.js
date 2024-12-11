@@ -1,7 +1,10 @@
 const { Router } = require("express");
 const categoriesRouter = Router();
 const categoriesController = require("../controllers/categoriesController");
-const { validateNewCategory } = require("../controllers/categoriesController");
+const {
+  validateNewCategory,
+  validateDeleteCategory,
+} = require("../controllers/categoriesController");
 const multer = require("multer");
 
 const storage = multer.memoryStorage({
@@ -33,6 +36,13 @@ categoriesRouter.post(
   upload.single("image"),
   validateNewCategory,
   categoriesController.addNewCategory
+);
+
+// delete category
+categoriesRouter.post(
+  "/delete/:id",
+  validateDeleteCategory,
+  categoriesController.deleteCategory
 );
 
 module.exports = categoriesRouter;

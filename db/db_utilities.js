@@ -114,6 +114,14 @@ const getItemById = async (id) => {
   return result.rows[0];
 };
 
+// delete product
+const removeProduct = async (id) => {
+  const query = "DELETE FROM items WHERE id = $1";
+  const value = [id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 // create category
 const addCategory = async (name, description, image) => {
   const query =
@@ -124,7 +132,7 @@ const addCategory = async (name, description, image) => {
 };
 
 // delete category
-const deleteCategory = async (id) => {
+const removeCategory = async (id) => {
   const query = "DELETE FROM categories WHERE id = $1";
   const value = [id];
   const result = await pool.query(query, value);
@@ -142,5 +150,6 @@ module.exports = {
   createProduct,
   getItemById,
   addCategory,
-  deleteCategory,
+  removeCategory,
+  removeProduct,
 };
