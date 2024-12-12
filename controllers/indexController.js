@@ -4,7 +4,7 @@ const {
   getTotalPages,
   getCountTotalSearchItems,
 } = require("../db/db_utilities");
-const { getArrayOfIdAndName } = require("../public/js/utilities.mjs");
+const { getArrayOfIdAndName } = require("../public/js/utilities.js");
 
 const { route } = require("../routes/indexRouter");
 

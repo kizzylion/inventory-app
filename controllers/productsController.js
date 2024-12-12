@@ -8,7 +8,7 @@ const {
   removeProduct,
 } = require("../db/db_utilities");
 const { body, validationResult } = require("express-validator");
-const { getArrayOfIdAndName } = require("../public/js/utilities.mjs");
+const { getArrayOfIdAndName } = require("../public/js/utilities.js");
 
 const validateNewProduct = [
   body("productName")
