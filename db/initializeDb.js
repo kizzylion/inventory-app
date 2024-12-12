@@ -48,6 +48,9 @@ const initializeDb = async () => {
         EXECUTE FUNCTION update_updated_at_column();
         `
     );
+    await pool.query(
+      ` ALTER TABLE suppliers ADD CONSTRAINT unique_name UNIQUE (name);`
+    );
 
     await pool.query(
       `CREATE TABLE IF NOT EXISTS stores (id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE, location VARCHAR(255), phone VARCHAR(15), email VARCHAR(100), date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
