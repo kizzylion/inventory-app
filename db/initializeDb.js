@@ -18,14 +18,35 @@ const initializeDb = async () => {
     );
     await pool.query(
       `CREATE TABLE suppliers (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    tel VARCHAR(15) NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        tel VARCHAR(15) NOT NULL,
+        location VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )`
+    );
+
+    // create trigger to update updated_at column
+    await pool.query(
+      `CREATE OR REPLACE FUNCTION update_updated_at_column()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            NEW.updated_at = CURRENT_TIMESTAMP;
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;
+        `
+    );
+
+    // attach trigger to suppliers table
+    await pool.query(
+      ` CREATE TRIGGER set_updated_at
+        BEFORE UPDATE ON suppliers
+        FOR EACH ROW
+        EXECUTE FUNCTION update_updated_at_column();
+        `
     );
 
     await pool.query(
