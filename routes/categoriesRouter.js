@@ -11,6 +11,9 @@ const storage = multer.memoryStorage({
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
   },
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5MB
+  },
 });
 
 const upload = multer({
@@ -43,6 +46,17 @@ categoriesRouter.post(
   "/delete/:id",
   validateDeleteCategory,
   categoriesController.deleteCategory
+);
+
+// edit category
+categoriesRouter.get("/edit/:id", categoriesController.getEditCategoryForm);
+
+// update category
+categoriesRouter.post(
+  "/edit/:id",
+  upload.single("image"),
+  validateNewCategory,
+  categoriesController.postEditCategory
 );
 
 module.exports = categoriesRouter;

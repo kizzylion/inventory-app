@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/head", { title: "Edit Category" }) %>
+<body class="bg-gray-100 flex relative flex-col h-dvh w-screen max-w-screen lg:flex-row">
+  <%- include("partials/nav", { active: "categories" }) %>
+  <main class="w-full  h-full relative flex flex-col items-start justify-start gap-5 lg:gap-8 overflow-x-hidden overflow-y-auto ">
+    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8 ">
+      <div class="container gap-4 lg:gap-5 px-4 md:px-8 h-fit flex flex-col ">
+        <div id="breadcrumbs" class="flex items-center gap-2 h-fit">
+          <a href="/" class="text-xs lg:text-sm text-gray-500 hover:text-gray-900">Home</a>
+          <span class="text-xs lg:text-sm text-gray-500">&gt;</span>
+          <a href="/categories" class="text-xs lg:text-sm text-gray-500 hover:text-gray-900">Categories</a>
+          <span class="text-xs lg:text-sm text-gray-500">&gt;</span>
+          <span class="text-xs lg:text-sm text-gray-900 font-medium">Edit Category</span>
+        </div>
+        <%- include("partials/mainTitle", { title: "Edit Category", subtitle: "Edit a category here" }) %>
+      </div>
+    </section>
+
+    <section id="productForm" class="w-full max-w-4xl h-fit flex flex-col items-start justify-start ">
+      <div class="w-full h-fit flex flex-col px-4 md:px-8">
+
+        <form action="/categories/edit/<%= category.id %>" method="post" enctype="multipart/form-data" class=" @container w-full h-full flex flex-col py-4">
+            <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-8 mb-8">
+                
+                <label for="categoryName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Category Name
+                    <input required placeholder="Category Name" value="<%= category.name %>" type="text" id="categoryName" name="categoryName" class="w-full h-fit border text-gray-700 border-gray-300 rounded-md px-[0.875em] py-[0.625em] mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                </label>
+                
+                <!-- description -->
+                <label for="description" class="w-full h-fit flex flex-col items-start justify-start text-gray-700 col-span-2">Description
+                    <textarea  placeholder="Enter Description" type="text" id="description" name="categoryDescription" rows="5" class="w-full h-fit border border-gray-300 text-gray-700 rounded-md px-[0.875em] py-[0.625em] mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"><%= category.description %></textarea>
+                </label>
+                <!-- image -->
+                <label for="image" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">UploadImage
+                    <input type="file" id="image" name="image" accept="image/*" class="hidden w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            
+                    <div  class="w-[100px] h-[56px] aspect-[16/9] flex items-center justify-center border border-gray-300 rounded-md text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent object-cover cursor-pointer">
+                        <!-- if input is empty  show image placeholder -->
+                        <img id="imagePreview" src="<%= category.image ? `data:image/jpeg;base64,${category.image}` : '/images/image-fill.svg' %>" alt="Image Preview" class=" h-[70%] mx-auto mt-auto mb-auto object-cover">
+                    </div>
+                </label>
+            </div>
+            <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-4">
+                <!-- cancel button -->
+                <a href="/categories" class="bg-white text-gray-500 px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-gray-100">
+                Cancel
+                </a>
+                <!-- add product button -->
+                <button type="submit" class="bg-indigo-500 text-white px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-indigo-600">
+                Update Category
+            </button>
+            </div>
+        </form>
+      </div>
+    </section>
+
+    
+  </main>
+   
+   <script src="/js/imagePreview.js"></script>
+</body>
+</html>

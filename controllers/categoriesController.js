@@ -2,6 +2,8 @@ const {
   getAllCategories,
   addCategory,
   removeCategory,
+  getCategoryById,
+  updateCategory,
 } = require("../db/db_utilities");
 const { validationResult, body, check } = require("express-validator");
 
@@ -65,6 +67,27 @@ const deleteCategory = async (req, res) => {
   }
 };
 
+const getEditCategoryForm = async (req, res) => {
+  const { id } = req.params;
+  const category = await getCategoryById(id);
+  res.render("editCategory", { category });
+};
+
+const postEditCategory = async (req, res) => {
+  const { id } = req.params;
+  const { categoryName, categoryDescription } = req.body;
+  let base64Image = null;
+  if (req.file) {
+    base64Image = req.file.buffer.toString("base64");
+  } else {
+    // preserve the old image
+    const category = await getCategoryById(id);
+    base64Image = category.image;
+  }
+  await updateCategory(id, categoryName, categoryDescription, base64Image);
+  res.redirect("/categories");
+};
+
 module.exports = {
   getCategories,
   getNewCategoryForm,
@@ -72,4 +95,6 @@ module.exports = {
   validateNewCategory,
   validateDeleteCategory,
   deleteCategory,
+  getEditCategoryForm,
+  postEditCategory,
 };

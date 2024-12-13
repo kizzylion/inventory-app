@@ -158,6 +158,14 @@ const addCategory = async (name, description, image) => {
   return result.rows[0];
 };
 
+// get category by id
+const getCategoryById = async (id) => {
+  const query = "SELECT * FROM categories WHERE id = $1";
+  const value = [id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 // delete category
 const removeCategory = async (id) => {
   const query = "DELETE FROM categories WHERE id = $1";
@@ -167,7 +175,7 @@ const removeCategory = async (id) => {
 };
 
 // edit category
-const editCategory = async (id, name, description, image) => {
+const updateCategory = async (id, name, description, image) => {
   const query =
     "UPDATE categories SET name = $1, description = $2, image = $3 WHERE id = $4";
   const value = [name, description, image, id];
@@ -180,6 +188,14 @@ const addSupplier = async (name, email, tel, address) => {
   const query =
     "INSERT INTO suppliers (name, email, tel, address) VALUES ($1, $2, $3, $4)";
   const value = [name, email, tel, address];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
+// get supplier by id
+const getSupplierById = async (id) => {
+  const query = "SELECT * FROM suppliers WHERE id = $1";
+  const value = [id];
   const result = await pool.query(query, value);
   return result.rows[0];
 };
@@ -207,6 +223,14 @@ const addStore = async (name, location, phone, email) => {
   return result.rows[0];
 };
 
+// get store by id
+const getStoreById = async (id) => {
+  const query = "SELECT * FROM stores WHERE id = $1";
+  const value = [id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 // delete store
 const removeStore = async (id) => {
   const query = "DELETE FROM stores WHERE id = $1";
@@ -225,6 +249,9 @@ module.exports = {
   getCountTotalSearchItems,
   createProduct,
   getItemById,
+  getCategoryById,
+  getSupplierById,
+  getStoreById,
   addCategory,
   removeCategory,
   removeProduct,
@@ -234,4 +261,5 @@ module.exports = {
   addStore,
   removeStore,
   updateProduct,
+  updateCategory,
 };
