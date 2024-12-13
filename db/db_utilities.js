@@ -166,6 +166,15 @@ const removeCategory = async (id) => {
   return result.rows[0];
 };
 
+// edit category
+const editCategory = async (id, name, description, image) => {
+  const query =
+    "UPDATE categories SET name = $1, description = $2, image = $3 WHERE id = $4";
+  const value = [name, description, image, id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 // create supplier
 const addSupplier = async (name, email, tel, address) => {
   const query =
