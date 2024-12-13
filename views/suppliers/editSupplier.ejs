@@ -20,6 +20,7 @@
     <section id="productForm" class="w-full max-w-4xl h-fit flex flex-col items-start justify-start ">
       <div class="w-full h-fit flex flex-col px-4 md:px-8">
         <form action="/suppliers/edit/<%= supplier.id %>" method="post" id="addSupplierForm" novalidate class=" @container w-full h-full flex flex-col py-4">
+          <input type="hidden" id="editPassword<%= supplier.id %>" name="editPassword">
             <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-8 mb-8">
                 
                 <label for="supplierName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Supplier Name
@@ -45,7 +46,7 @@
                 Cancel
                 </a>
                 <!-- add product button -->
-                <button type="submit" id="addSupplierButton" class="bg-indigo-500 text-white px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-indigo-600">
+                <button type="submit" id="addSupplierButton" onclick="return collectPassword(event, 'editPassword<%= supplier.id %>')" class="bg-indigo-500 text-white px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-indigo-600">
                 Update Supplier
                </button>
             </div>
@@ -56,6 +57,7 @@
     
   </main>
   
+  <script src="/js/collectPassword.js"></script>
   <script src="/js/validateSupplierForm.js"></script>
 </body>
 </html>

@@ -77,14 +77,22 @@ const postEditSupplier = async (req, res) => {
   const { id } = req.params;
   const { supplierName, supplierEmail, supplierTel, supplierAddress } =
     req.body;
-  await updateSupplier(
-    id,
-    supplierName,
-    supplierEmail,
-    supplierTel,
-    supplierAddress
-  );
-  res.redirect("/suppliers");
+  const { editPassword } = req.body;
+  if (!editPassword) {
+    return res.status(400).send("Password is required");
+  }
+  if (editPassword === process.env.ADMIN_PASSWORD) {
+    await updateSupplier(
+      id,
+      supplierName,
+      supplierEmail,
+      supplierTel,
+      supplierAddress
+    );
+    res.redirect("/suppliers");
+  } else {
+    res.status(401).send("Unauthorized");
+  }
 };
 
 module.exports = {

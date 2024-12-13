@@ -76,16 +76,25 @@ const getEditCategoryForm = async (req, res) => {
 const postEditCategory = async (req, res) => {
   const { id } = req.params;
   const { categoryName, categoryDescription } = req.body;
-  let base64Image = null;
-  if (req.file) {
-    base64Image = req.file.buffer.toString("base64");
-  } else {
-    // preserve the old image
-    const category = await getCategoryById(id);
-    base64Image = category.image;
+
+  const { editPassword } = req.body;
+  if (!editPassword) {
+    return res.status(400).send("Password is required");
   }
-  await updateCategory(id, categoryName, categoryDescription, base64Image);
-  res.redirect("/categories");
+  if (editPassword === process.env.ADMIN_PASSWORD) {
+    let base64Image = null;
+    if (req.file) {
+      base64Image = req.file.buffer.toString("base64");
+    } else {
+      // preserve the old image
+      const category = await getCategoryById(id);
+      base64Image = category.image;
+    }
+    await updateCategory(id, categoryName, categoryDescription, base64Image);
+    res.redirect("/categories");
+  } else {
+    res.status(401).send("Unauthorized");
+  }
 };
 
 module.exports = {
