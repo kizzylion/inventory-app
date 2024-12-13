@@ -22,7 +22,7 @@
       <div class="w-full h-fit flex flex-col px-4 md:px-8">
         <!-- display product image -->
         <div class="w-1/2 aspect-[16/9] flex flex-col items-start justify-start">
-            <img src="data:image/jpeg;base64,<%= product.image_base64 %>" alt="<%= product.name %>" class="w-auto h-full aspect-square object-cover border border-gray-300 rounded-md">
+            <img src="<%= product.image ? `data:image/jpeg;base64,${product.image}` : '/images/image-fill.svg' %>" alt="<%= product.name %>" class="w-auto h-full  aspect-square object-cover border border-gray-300 rounded-md">
         </div>
         <div id="productsTable" class="w-full h-fit flex flex-col items-start justify-start">
             <!-- details info -->

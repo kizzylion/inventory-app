@@ -21,6 +21,9 @@ const upload = multer({
       cb(new Error("Only image files are allowed!"), false);
     }
   },
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5MB
+  },
 });
 
 productRouter.get("/", productsController.getProducts);
