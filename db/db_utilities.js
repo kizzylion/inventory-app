@@ -208,6 +208,15 @@ const removeSupplier = async (id) => {
   return result.rows[0];
 };
 
+// UPDATE SUPPLIER
+const updateSupplier = async (id, name, email, tel, address) => {
+  const query =
+    "UPDATE suppliers SET name = $1, email = $2, tel = $3, address = $4 WHERE id = $5";
+  const value = [name, email, tel, address, id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 // get store
 const getAllStores = async () => {
   const result = await pool.query("SELECT * FROM stores");
@@ -239,6 +248,15 @@ const removeStore = async (id) => {
   return result.rows[0];
 };
 
+// update store
+const updateStore = async (id, name, location, phone, email) => {
+  const query =
+    "UPDATE stores SET name = $1, location = $2, phone = $3, email = $4 WHERE id = $5";
+  const value = [name, location, phone, email, id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -262,4 +280,6 @@ module.exports = {
   removeStore,
   updateProduct,
   updateCategory,
+  updateSupplier,
+  updateStore,
 };

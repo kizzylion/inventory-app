@@ -2,6 +2,8 @@ const {
   getAllSuppliers,
   addSupplier,
   removeSupplier,
+  updateSupplier,
+  getSupplierById,
 } = require("../db/db_utilities");
 const { body, validationResult, check } = require("express-validator");
 
@@ -65,6 +67,26 @@ const deleteSupplier = async (req, res) => {
   }
 };
 
+const getEditSupplierForm = async (req, res) => {
+  const { id } = req.params;
+  const supplier = await getSupplierById(id);
+  res.render("suppliers/editSupplier", { supplier });
+};
+
+const postEditSupplier = async (req, res) => {
+  const { id } = req.params;
+  const { supplierName, supplierEmail, supplierTel, supplierAddress } =
+    req.body;
+  await updateSupplier(
+    id,
+    supplierName,
+    supplierEmail,
+    supplierTel,
+    supplierAddress
+  );
+  res.redirect("/suppliers");
+};
+
 module.exports = {
   getSuppliers,
   getNewSupplierForm,
@@ -72,4 +94,6 @@ module.exports = {
   validateDeleteSupplier,
   addNewSupplier,
   deleteSupplier,
+  getEditSupplierForm,
+  postEditSupplier,
 };

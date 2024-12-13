@@ -25,4 +25,14 @@ suppliersRouter.post(
   suppliersController.deleteSupplier
 );
 
+// edit supplier
+suppliersRouter.get("/edit/:id", suppliersController.getEditSupplierForm);
+
+// update supplier
+suppliersRouter.post(
+  "/edit/:id",
+  validateNewSupplier,
+  suppliersController.postEditSupplier
+);
+
 module.exports = suppliersRouter;
