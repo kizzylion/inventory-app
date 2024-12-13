@@ -1,0 +1,31 @@
+<form action="/stores/new" method="post" id="addStoreForm" novalidate class=" @container w-full h-full flex flex-col py-4">
+    <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-8 mb-8">
+        
+        <label for="storeName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Store Name
+            <input required placeholder="Store Name" type="text" id="storeName" name="storeName" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <span class="error" id="storeNameError" aria-live="polite"></span>
+        </label>
+        <label for="storeLocation" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Store Location
+            <input required placeholder="Enter Store Location" type="address" id="storeLocation" name="storeLocation" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <span class="error" id="storeLocationError" aria-live="polite"></span>
+        </label>
+        <label for="storePhone" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Store Phone
+            <input placeholder="Enter Store Phone" type="tel" minlength="10" maxlength="10" id="storePhone" name="storePhone" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <span class="error" id="storePhoneError" aria-live="polite"></span>
+        </label>
+        <label for="storeEmail" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Store Email
+            <input required placeholder="Enter Store Email" type="email" id="storeEmail" name="storeEmail" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <span class="error" id="storeEmailError" aria-live="polite"></span>
+        </label>
+    </div>
+    <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-4">
+        <!-- cancel button -->
+        <a href="/stores" class="bg-white text-gray-500 px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-gray-100">
+        Cancel
+        </a>
+        <!-- add product button -->
+        <button type="submit" id="addStoreButton" class="bg-indigo-500 text-white px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-indigo-600">
+        Add Store
+       </button>
+    </div>
+</form>

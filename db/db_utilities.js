@@ -156,6 +156,21 @@ const removeSupplier = async (id) => {
   return result.rows[0];
 };
 
+// get store
+const getAllStores = async () => {
+  const result = await pool.query("SELECT * FROM stores");
+  return result.rows;
+};
+
+// add store
+const addStore = async (name, location, phone, email) => {
+  const query =
+    "INSERT INTO stores (name, location, phone, email) VALUES ($1, $2, $3, $4)";
+  const value = [name, location, phone, email];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -171,4 +186,6 @@ module.exports = {
   removeProduct,
   addSupplier,
   removeSupplier,
+  getAllStores,
+  addStore,
 };
