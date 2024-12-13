@@ -76,6 +76,19 @@ const initializeDb = async () => {
       `ALTER TABLE store_items ADD CONSTRAINT unique_store_item UNIQUE (store_id, item_id);`
     );
 
+    await pool.query(
+      `CREATE TABLE IF NOT EXISTS item_movements (
+        id SERIAL PRIMARY KEY,
+        item_id INT REFERENCES Items(id) ON DELETE CASCADE,
+        from_store_id INT REFERENCES Stores(id) ON DELETE CASCADE,
+        to_store_id INT REFERENCES Stores(id) ON DELETE CASCADE,
+        quantity INT NOT NULL,
+        movement_type VARCHAR(50) NOT NULL, -- 'add', 'remove', 'transfer'
+        movement_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        description TEXT -- Notes about the movement
+      );`
+    );
+
     console.log("Database initialized successfully");
   } catch (error) {
     console.error(error);
@@ -144,6 +157,17 @@ const insertData = async () => {
       (3, 9, 45),
       (1, 10, 10)
       ON CONFLICT (store_id, item_id) DO NOTHING;`
+    );
+
+    await pool.query(
+      `INSERT INTO item_movements (item_id, from_store_id, to_store_id, quantity, movement_type, description) VALUES
+      (1, NULL, 1, 20, 'add', 'Added 20 iPhone 14 to Downtown Tech Store'), -- Adding stock
+      (2, NULL, 2, 10, 'add', 'Added 10 Dell XPS 15 to Uptown Gadget Center'),
+      (3, NULL, 1, 50, 'add', 'Added 50 AirPods Pro to Downtown Tech Store'),
+
+      (1, 1, 2, 5, 'transfer', 'Transferred 5 iPhone 14 from Downtown to Uptown Tech Store'),
+      (2, 2, 1, 3, 'transfer', 'Transferred 3 Dell XPS 15 from Uptown to Downtown Tech Store')
+      ;`
     );
 
     console.log("Data inserted successfully");

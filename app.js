@@ -11,7 +11,7 @@ const productsRouter = require("./routes/productsRouter");
 const categoriesRouter = require("./routes/categoriesRouter");
 const suppliersRouter = require("./routes/suppliersRouter");
 const storesRouter = require("./routes/storesRouter");
-
+const itemMovementsRouter = require("./routes/itemMovementsRouter");
 app.use(express.static("public"));
 
 app.set("view engine", "ejs");
@@ -24,6 +24,7 @@ app.use("/products", productsRouter);
 app.use("/categories", categoriesRouter);
 app.use("/stores", storesRouter);
 app.use("/suppliers", suppliersRouter);
+app.use("/item-movements", itemMovementsRouter);
 
 //error handling
 app.use((req, res) => {

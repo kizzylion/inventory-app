@@ -38,7 +38,6 @@ const getNewStoreForm = (req, res) => {
 };
 
 const addNewStore = async (req, res) => {
-  console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -76,7 +75,6 @@ const postEditStore = async (req, res) => {
   const { storeName, storeLocation, storePhone, storeEmail } = req.body;
 
   const { editPassword } = req.body;
-  console.log(req.body);
 
   if (!editPassword) {
     return res.status(400).send("Password is required");
@@ -97,8 +95,6 @@ const getStoreInventory = async (req, res) => {
   const store = await getStoreById(id);
   // get all products of the store
   const products = await getStoreItems(id);
-  console.log(store);
-  console.log(products);
   res.render("stores/store_items", { store, products });
 };
 

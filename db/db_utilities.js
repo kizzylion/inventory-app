@@ -275,6 +275,20 @@ const getStoreInventory = async (productId) => {
   return result.rows;
 };
 
+// get item movements
+const getAllItemMovements = async () => {
+  const query = `SELECT item_movements.*, items.name as item_name, items.image as item_image, from_stores.name as from_store_name, to_stores.name as to_store_name, item_movements.quantity as quantity, item_movements.movement_date as movement_date, item_movements.movement_type as movement_type, item_movements.description as description 
+    FROM item_movements 
+    LEFT JOIN items ON item_movements.item_id = items.id 
+    LEFT JOIN stores AS from_stores ON item_movements.from_store_id = from_stores.id 
+    LEFT JOIN stores AS to_stores ON item_movements.to_store_id = to_stores.id 
+    ORDER BY movement_date DESC;
+    `;
+  const result = await pool.query(query);
+  console.log(result.rows);
+  return result.rows;
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -302,4 +316,5 @@ module.exports = {
   updateStore,
   getStoreItems,
   getStoreInventory,
+  getAllItemMovements,
 };
