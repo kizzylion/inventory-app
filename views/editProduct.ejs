@@ -23,6 +23,7 @@
 
 
         <form action="/products/edit/<%= product.id %>" method="post" enctype="multipart/form-data" class=" @container w-full h-full flex flex-col py-4">
+          <input type="hidden" id="editPassword<%= product.id %>" name="editPassword">
           <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-8 mb-8">
               
               <label for="productName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Product Name
@@ -73,7 +74,7 @@
               Cancel
               </a>
               <!-- add product button -->
-              <button type="submit" class="bg-indigo-500 text-white px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-indigo-600">
+              <button type="submit" onclick="return collectPassword(event, 'editPassword<%= product.id %>')" class="bg-indigo-500 text-white px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-indigo-600">
               Update Product
              </button>
           </div>
@@ -85,7 +86,8 @@
   </main>
   <!-- details modal -->
    <%- include("partials/detailsModal") %>
-   
+   <script src="/js/collectPassword.js"></script>
    <script src="/js/imagePreview.js"></script>
+
 </body>
 </html>

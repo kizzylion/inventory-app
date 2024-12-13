@@ -185,35 +185,44 @@ const getEditProduct = async (req, res) => {
 
 const postEditProduct = async (req, res) => {
   const { id } = req.params;
+  const { editPassword } = req.body;
   const product = await getItemById(id);
-  const {
-    productName,
-    productPrice,
-    quantity,
-    category,
-    supplier,
-    description,
-  } = req.body;
 
-  let base64Image = null;
-  if (req.file) {
-    base64Image = req.file.buffer.toString("base64");
-  } else {
-    // Preserve the existing image
-    base64Image = product.image;
+  if (!editPassword) {
+    return res.status(400).send("Password is required");
   }
+  if (editPassword === process.env.ADMIN_PASSWORD) {
+    const {
+      productName,
+      productPrice,
+      quantity,
+      category,
+      supplier,
+      description,
+    } = req.body;
 
-  await updateProduct(
-    id,
-    productName,
-    productPrice,
-    quantity,
-    category,
-    supplier,
-    description,
-    base64Image
-  );
-  res.redirect(`/products/view/${id}`);
+    let base64Image = null;
+    if (req.file) {
+      base64Image = req.file.buffer.toString("base64");
+    } else {
+      // Preserve the existing image
+      base64Image = product.image;
+    }
+
+    await updateProduct(
+      id,
+      productName,
+      productPrice,
+      quantity,
+      category,
+      supplier,
+      description,
+      base64Image
+    );
+    res.redirect(`/products/view/${id}`);
+  } else {
+    res.status(401).send("Unauthorized");
+  }
 };
 
 module.exports = {
