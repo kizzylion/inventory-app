@@ -139,6 +139,15 @@ const removeCategory = async (id) => {
   return result.rows[0];
 };
 
+// create supplier
+const addSupplier = async (name, email, tel, address) => {
+  const query =
+    "INSERT INTO suppliers (name, email, tel, address) VALUES ($1, $2, $3, $4)";
+  const value = [name, email, tel, address];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -152,4 +161,5 @@ module.exports = {
   addCategory,
   removeCategory,
   removeProduct,
+  addSupplier,
 };

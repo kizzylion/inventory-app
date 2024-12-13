@@ -1,0 +1,31 @@
+<form action="/suppliers/new" method="post" id="addSupplierForm" novalidate class=" @container w-full h-full flex flex-col py-4">
+    <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-8 mb-8">
+        
+        <label for="supplierName" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Supplier Name
+            <input required placeholder="Supplier Name" type="text" id="supplierName" name="supplierName" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <span class="error" id="supplierNameError" aria-live="polite"></span>
+        </label>
+        <label for="supplierEmail" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Supplier Email
+            <input required placeholder="Enter Supplier Email" type="email" id="supplierEmail" name="supplierEmail" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <span class="error" id="supplierEmailError" aria-live="polite"></span>
+        </label>
+        <label for="supplierTel" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Supplier Tel
+            <input placeholder="Enter Supplier Tel" type="tel" minlength="10" maxlength="10" id="supplierTel" name="supplierTel" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <span class="error" id="supplierTelError" aria-live="polite"></span>
+        </label>
+        <label for="supplierAddress" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Supplier Address
+            <input required placeholder="Enter Supplier Address" type="address" id="supplierAddress" name="supplierAddress" class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <span class="error" id="supplierAddressError" aria-live="polite"></span>
+        </label>
+    </div>
+    <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-4">
+        <!-- cancel button -->
+        <a href="/suppliers" class="bg-white text-gray-500 px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-gray-100">
+        Cancel
+        </a>
+        <!-- add product button -->
+        <button type="submit" id="addSupplierButton" class="bg-indigo-500 text-white px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-indigo-600">
+        Add Supplier
+       </button>
+    </div>
+</form>

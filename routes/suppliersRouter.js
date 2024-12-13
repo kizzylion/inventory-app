@@ -9,15 +9,14 @@ const {
 suppliersRouter.get("/", suppliersController.getSuppliers);
 
 // add new supplier form
-// suppliersRouter.get("/new", suppliersController.getNewSupplierForm);
+suppliersRouter.get("/new", suppliersController.getNewSupplierForm);
 
 // add new supplier
-// suppliersRouter.post(
-//   "/new",
-//   upload.single("image"),
-//   validateNewSupplier,
-//   suppliersController.addNewSupplier
-// );
+suppliersRouter.post(
+  "/new",
+  validateNewSupplier,
+  suppliersController.addNewSupplier
+);
 
 // delete supplier
 // suppliersRouter.post(

@@ -55,6 +55,36 @@ a {
   color: inherit;
 }
 
+input.error {
+  border: 1px solid red;
+}
+
+/* input:invalid {
+  border: 1px solid red;
+}
+   
+
+input:focus:invalid {
+  outline: none;
+} */
+
+/* error message styles */
+.error {
+  width: 100%;
+  padding: 0;
+  height: 1em;
+
+  font-size: 80%;
+  color: rgb(133, 3, 3);
+  border-radius: 0 0 5px 5px;
+
+  box-sizing: border-box;
+}
+
+.error.active {
+  /* padding: 0.3em; */
+}
+
 /* sidenav */
 #sidenav .nav-link.active {
   background-color: #e5e5e5;
