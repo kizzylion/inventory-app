@@ -63,12 +63,12 @@
               <% suppliers.forEach(supplier => { %>
                   <tr class="table-row w-fit h-fit flex flex-row w-max min-w-full overflow-visible relative">
                   <td class="table-data text-sm text-gray-900 sticky left-0 z-10 w-[10em]">
-                      <a href="/suppliers/view/<%= supplier.id %>" class="w-full h-fit flex items-center justify-start gap-2">
+                      <div class="w-full h-fit flex items-center justify-start gap-2">
                         
                         <p class="text-sm flex text-gray-500">
                           <%= supplier.name %>
                         </p>
-                      </a>
+                      </div>
                   </td>
                   <td class="table-data text-sm text-gray-900 w-[8em] max-w-[8em] text-center"><%= `${supplier.id}` %></td>
                   <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em]"><%= supplier.address %></td>
