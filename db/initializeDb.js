@@ -59,6 +59,22 @@ const initializeDb = async () => {
     await pool.query(
       `CREATE TABLE IF NOT EXISTS items (id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE, description TEXT, category_id INT REFERENCES Categories(id) ON DELETE CASCADE, price DECIMAL(10, 2) NOT NULL, quantity INT NOT NULL DEFAULT 0,supplier_id INT REFERENCES Suppliers(id) ON DELETE SET NULL,image BYTEA, date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
     );
+    await pool.query(
+      `CREATE TABLE IF NOT EXISTS store_items (
+        id SERIAL PRIMARY KEY,
+        store_id INT NOT NULL,
+        item_id INT NOT NULL,
+        quantity INT NOT NULL DEFAULT 0,
+        date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (store_id) REFERENCES stores(id),
+        FOREIGN KEY (item_id) REFERENCES items(id)
+      );
+      `
+    );
+
+    await pool.query(
+      `ALTER TABLE store_items ADD CONSTRAINT unique_store_item UNIQUE (store_id, item_id);`
+    );
 
     console.log("Database initialized successfully");
   } catch (error) {
@@ -113,6 +129,21 @@ const insertData = async () => {
       ('iPad Pro 12.9"', 'Apple tablet with large screen and powerful performance', 2, 1099.99, 20, 1),
       ('USB-C Charger', 'Fast charging USB-C charger for multiple devices', 3, 29.99, 200, 3)
       ON CONFLICT (name) DO NOTHING;`
+    );
+
+    await pool.query(
+      `INSERT INTO store_items (store_id, item_id, quantity) VALUES
+      (1, 3, 50),
+      (1, 5, 30),
+      (2, 1, 40),
+      (2, 4, 25),
+      (3, 2, 60),
+      (3, 6, 15),
+      (1, 7, 20),
+      (2, 8, 35),
+      (3, 9, 45),
+      (1, 10, 10)
+      ON CONFLICT (store_id, item_id) DO NOTHING;`
     );
 
     console.log("Data inserted successfully");

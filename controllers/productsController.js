@@ -9,6 +9,7 @@ const {
   getItemById,
   removeProduct,
   updateProduct,
+  getStoreInventory,
 } = require("../db/db_utilities");
 const { body, validationResult } = require("express-validator");
 const { getArrayOfIdAndName } = require("../public/js/utilities.js");
@@ -147,7 +148,12 @@ const postNewProduct = async (req, res) => {
 
 const getProductById = async (req, res) => {
   const product = await getItemById(req.params.id);
-  res.render("productDetails", { product });
+
+  // get store inventory
+  const storeInventory = await getStoreInventory(product.id);
+  console.log(storeInventory);
+
+  res.render("productDetails", { product, storeInventory });
 };
 
 const deleteProduct = async (req, res) => {

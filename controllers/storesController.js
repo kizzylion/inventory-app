@@ -1,4 +1,11 @@
-const { getAllStores, addStore, removeStore } = require("../db/db_utilities");
+const {
+  getAllStores,
+  addStore,
+  removeStore,
+  getStoreById,
+  updateStore,
+  getStoreItems,
+} = require("../db/db_utilities");
 
 const { validationResult, body, check } = require("express-validator");
 
@@ -58,6 +65,43 @@ const deleteStore = async (req, res) => {
   }
 };
 
+const getEditStoreForm = async (req, res) => {
+  const { id } = req.params;
+  const store = await getStoreById(id);
+  res.render("stores/editStore", { store });
+};
+
+const postEditStore = async (req, res) => {
+  const { id } = req.params;
+  const { storeName, storeLocation, storePhone, storeEmail } = req.body;
+
+  const { editPassword } = req.body;
+  console.log(req.body);
+
+  if (!editPassword) {
+    return res.status(400).send("Password is required");
+  }
+
+  if (editPassword === process.env.ADMIN_PASSWORD) {
+    await updateStore(id, storeName, storeLocation, storePhone, storeEmail);
+    res.redirect("/stores");
+  } else {
+    res.status(401).send("Unauthorized");
+  }
+};
+
+// get store by id
+const getStoreInventory = async (req, res) => {
+  const { id } = req.params;
+
+  const store = await getStoreById(id);
+  // get all products of the store
+  const products = await getStoreItems(id);
+  console.log(store);
+  console.log(products);
+  res.render("stores/store_items", { store, products });
+};
+
 module.exports = {
   getStore,
   getNewStoreForm,
@@ -65,4 +109,7 @@ module.exports = {
   validateNewStore,
   validateDeleteStore,
   deleteStore,
+  getEditStoreForm,
+  postEditStore,
+  getStoreInventory,
 };

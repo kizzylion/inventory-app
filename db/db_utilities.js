@@ -219,7 +219,7 @@ const updateSupplier = async (id, name, email, tel, address) => {
 
 // get store
 const getAllStores = async () => {
-  const result = await pool.query("SELECT * FROM stores");
+  const result = await pool.query("SELECT * FROM stores ORDER BY name ASC");
   return result.rows;
 };
 
@@ -257,6 +257,24 @@ const updateStore = async (id, name, location, phone, email) => {
   return result.rows[0];
 };
 
+// get store items
+const getStoreItems = async (storeId) => {
+  const query =
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM store_items JOIN items ON store_items.item_id = items.id JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id WHERE store_items.store_id = $1";
+  const value = [storeId];
+  const result = await pool.query(query, value);
+  return result.rows;
+};
+
+// get store inventory
+const getStoreInventory = async (productId) => {
+  const query =
+    "SELECT store_items.*, stores.name as store_name FROM store_items JOIN stores ON store_items.store_id = stores.id WHERE store_items.item_id = $1";
+  const value = [productId];
+  const result = await pool.query(query, value);
+  return result.rows;
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -282,4 +300,6 @@ module.exports = {
   updateCategory,
   updateSupplier,
   updateStore,
+  getStoreItems,
+  getStoreInventory,
 };
