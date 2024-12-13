@@ -19,10 +19,10 @@ suppliersRouter.post(
 );
 
 // delete supplier
-// suppliersRouter.post(
-//   "/delete/:id",
-//   validateDeleteSupplier,
-//   suppliersController.deleteSupplier
-// );
+suppliersRouter.post(
+  "/delete/:id",
+  validateDeleteSupplier,
+  suppliersController.deleteSupplier
+);
 
 module.exports = suppliersRouter;

@@ -1,4 +1,6 @@
 const {
+  getAllCategories,
+  getAllSuppliers,
   getAllProductsWithCategoryAndSupplier,
   getSearchItems,
   getTotalPages,
@@ -46,10 +48,12 @@ const getProducts = async (req, res, next) => {
   let totalPages = await getTotalPages();
 
   // get array of categories.name and categories_id
-  let categories = getArrayOfIdAndName(products, "category_id", "category");
+  // let categories = getArrayOfIdAndName(products, "category_id", "category");
+  let categories = await getAllCategories();
 
   // get array of suppliers.name and suppliers_id
-  let suppliers = getArrayOfIdAndName(products, "supplier_id", "supplier");
+  // let suppliers = getArrayOfIdAndName(products, "supplier_id", "supplier");
+  let suppliers = await getAllSuppliers();
 
   res.render("products", {
     categories,
@@ -72,10 +76,12 @@ const getSearchProducts = async (req, res) => {
   let totalPages = await getCountTotalSearchItems(req.query);
 
   // get array of distinct categories.name and categories_id from all products
-  let categories = getArrayOfIdAndName(allProducts, "category_id", "category");
+  // let categories = getArrayOfIdAndName(allProducts, "category_id", "category");
+  let categories = await getAllCategories();
 
   // get array of distinct suppliers.name and suppliers_id
-  let suppliers = getArrayOfIdAndName(allProducts, "supplier_id", "supplier");
+  // let suppliers = getArrayOfIdAndName(allProducts, "supplier_id", "supplier");
+  let suppliers = await getAllSuppliers();
 
   res.render("products", {
     categories,

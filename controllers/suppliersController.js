@@ -1,5 +1,9 @@
-const { getAllSuppliers, addSupplier } = require("../db/db_utilities");
-const { body, validationResult } = require("express-validator");
+const {
+  getAllSuppliers,
+  addSupplier,
+  removeSupplier,
+} = require("../db/db_utilities");
+const { body, validationResult, check } = require("express-validator");
 
 const validateNewSupplier = [
   body("supplierName").notEmpty().withMessage("Supplier name is required"),
@@ -8,6 +12,10 @@ const validateNewSupplier = [
   body("supplierAddress")
     .notEmpty()
     .withMessage("Supplier address is required"),
+];
+
+const validateDeleteSupplier = [
+  check("deletePassword").notEmpty().withMessage("Password is required"),
 ];
 
 const getSuppliers = async (req, res) => {
@@ -41,9 +49,27 @@ const addNewSupplier = async (req, res) => {
   res.redirect("/suppliers");
 };
 
+const deleteSupplier = async (req, res) => {
+  const { id } = req.params;
+  const { deletePassword } = req.body;
+
+  if (!deletePassword) {
+    return res.status(400).send("Password is required");
+  }
+
+  if (deletePassword === process.env.ADMIN_PASSWORD) {
+    await removeSupplier(id);
+    res.redirect("/suppliers");
+  } else {
+    res.status(401).send("Unauthorized");
+  }
+};
+
 module.exports = {
   getSuppliers,
   getNewSupplierForm,
   validateNewSupplier,
+  validateDeleteSupplier,
   addNewSupplier,
+  deleteSupplier,
 };

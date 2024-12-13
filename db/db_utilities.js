@@ -148,6 +148,14 @@ const addSupplier = async (name, email, tel, address) => {
   return result.rows[0];
 };
 
+// delete supplier
+const removeSupplier = async (id) => {
+  const query = "DELETE FROM suppliers WHERE id = $1";
+  const value = [id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -162,4 +170,5 @@ module.exports = {
   removeCategory,
   removeProduct,
   addSupplier,
+  removeSupplier,
 };
