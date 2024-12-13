@@ -39,4 +39,13 @@ productRouter.post(
   productsController.postNewProduct
 );
 
+productRouter.get("/edit/:id", productsController.getEditProduct);
+
+productRouter.post(
+  "/edit/:id",
+  upload.single("image"),
+  validateNewProduct,
+  productsController.postEditProduct
+);
+
 module.exports = productRouter;

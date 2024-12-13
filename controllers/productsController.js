@@ -8,6 +8,7 @@ const {
   createProduct,
   getItemById,
   removeProduct,
+  updateProduct,
 } = require("../db/db_utilities");
 const { body, validationResult } = require("express-validator");
 const { getArrayOfIdAndName } = require("../public/js/utilities.js");
@@ -169,6 +170,52 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const getEditProduct = async (req, res) => {
+  const product = await getItemById(req.params.id);
+  let allProducts = await getAllProductsWithCategoryAndSupplier();
+
+  // get array of distinct categories.name and categories_id from all products
+  let categories = getArrayOfIdAndName(allProducts, "category_id", "category");
+
+  // get array of distinct suppliers.name and suppliers_id
+  let suppliers = getArrayOfIdAndName(allProducts, "supplier_id", "supplier");
+
+  res.render("editProduct", { product, categories, suppliers });
+};
+
+const postEditProduct = async (req, res) => {
+  const { id } = req.params;
+  const product = await getItemById(id);
+  const {
+    productName,
+    productPrice,
+    quantity,
+    category,
+    supplier,
+    description,
+  } = req.body;
+
+  let base64Image = null;
+  if (req.file) {
+    base64Image = req.file.buffer.toString("base64");
+  } else {
+    // Preserve the existing image
+    base64Image = product.image;
+  }
+
+  await updateProduct(
+    id,
+    productName,
+    productPrice,
+    quantity,
+    category,
+    supplier,
+    description,
+    base64Image
+  );
+  res.redirect(`/products/view/${id}`);
+};
+
 module.exports = {
   getProducts,
   getSearchProducts,
@@ -177,4 +224,6 @@ module.exports = {
   validateNewProduct,
   getProductById,
   deleteProduct,
+  getEditProduct,
+  postEditProduct,
 };

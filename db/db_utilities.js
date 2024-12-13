@@ -122,6 +122,33 @@ const removeProduct = async (id) => {
   return result.rows[0];
 };
 
+// edit product
+const updateProduct = async (
+  id,
+  name,
+  price,
+  quantity,
+  category,
+  supplier,
+  description,
+  image
+) => {
+  const query =
+    "UPDATE items SET name = $1, price = $2, quantity = $3, category_id = $4, supplier_id = $5, description = $6, image = $7 WHERE id = $8";
+  const value = [
+    name,
+    price,
+    quantity,
+    category,
+    supplier,
+    description,
+    image,
+    id,
+  ];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 // create category
 const addCategory = async (name, description, image) => {
   const query =
@@ -197,4 +224,5 @@ module.exports = {
   getAllStores,
   addStore,
   removeStore,
+  updateProduct,
 };
