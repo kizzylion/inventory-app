@@ -171,6 +171,14 @@ const addStore = async (name, location, phone, email) => {
   return result.rows[0];
 };
 
+// delete store
+const removeStore = async (id) => {
+  const query = "DELETE FROM stores WHERE id = $1";
+  const value = [id];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 module.exports = {
   getAllCategories,
   getAllProducts,
@@ -188,4 +196,5 @@ module.exports = {
   removeSupplier,
   getAllStores,
   addStore,
+  removeStore,
 };

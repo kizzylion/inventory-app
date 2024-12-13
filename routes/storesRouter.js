@@ -6,6 +6,16 @@ storeRouter.get("/", storeController.getStore);
 
 storeRouter.get("/new", storeController.getNewStoreForm);
 
-storeRouter.post("/new", storeController.addStoreController);
+storeRouter.post(
+  "/new",
+  storeController.validateNewStore,
+  storeController.addNewStore
+);
+
+storeRouter.post(
+  "/delete/:id",
+  storeController.validateDeleteStore,
+  storeController.deleteStore
+);
 
 module.exports = storeRouter;
