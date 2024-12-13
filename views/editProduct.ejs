@@ -56,7 +56,7 @@
 
                   <div  class="w-[100px] h-[56px] aspect-[16/9] flex items-center justify-center border border-gray-300 rounded-md text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent object-cover cursor-pointer">
                       <!-- if input is empty  show image placeholder -->
-                      <img id="imagePreview" src="<%= product.image ? `/images/products/${product.image}` : '/images/image-fill.svg' %>" alt="Image Preview" class=" h-[70%] mx-auto mt-auto mb-auto object-cover">
+                      <img id="imagePreview" src="<%= product.image ? `data:image/jpeg;base64,${product.image}` : '/images/image-fill.svg' %>" alt="Image Preview" class=" h-[70%] mx-auto mt-auto mb-auto object-cover">
                   </div>
               </label>
 

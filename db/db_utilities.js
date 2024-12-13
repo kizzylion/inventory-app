@@ -60,7 +60,7 @@ const getSearchItems = async (query, page = 1, limit = 10) => {
   // convert search to lowercase and add % to the beginning and end of the search string
 
   let result = await pool.query(
-    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id LIMIT $1 OFFSET $2",
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id ORDER BY items.id ASC LIMIT $1 OFFSET $2",
     [limit, (page - 1) * limit]
   );
   result.rows = result.rows.filter((item) => {
