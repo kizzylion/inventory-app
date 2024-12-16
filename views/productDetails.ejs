@@ -75,6 +75,10 @@
                     </label>
                 </div>
                 <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-3 gap-4">
+
+                    <label for="totalInventory" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Total Inventory
+                        <input type="text" id="totalInventory" value="<%= product.quantity + storeInventory.reduce((acc, store) => acc + store.quantity, 0) %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
+                    </label>
                     <label for="inventory" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Inventory
                         <input type="text" id="inventory" value="<%= product.quantity %>" readonly class="w-full h-fit border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-700">
                     </label>

@@ -5,6 +5,7 @@ const {
   getStoreById,
   updateStore,
   getStoreItems,
+  getAllProductsWithCategoryAndSupplierWithoutLimit,
 } = require("../db/db_utilities");
 
 const { validationResult, body, check } = require("express-validator");
@@ -91,10 +92,15 @@ const postEditStore = async (req, res) => {
 // get store by id
 const getStoreInventory = async (req, res) => {
   const { id } = req.params;
-
   const store = await getStoreById(id);
-  // get all products of the store
-  const products = await getStoreItems(id);
+  let products;
+
+  if (id === "9") {
+    products = await getAllProductsWithCategoryAndSupplierWithoutLimit();
+  } else {
+    // get all products of the store
+    products = await getStoreItems(id);
+  }
   res.render("stores/store_items", { store, products });
 };
 

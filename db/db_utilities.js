@@ -38,6 +38,16 @@ const getAllProductsWithCategoryAndSupplier = async (page = 1, limit = 10) => {
 
   return result.rows;
 };
+const getAllProductsWithCategoryAndSupplierWithoutLimit = async (
+  page = 1,
+  limit = 10
+) => {
+  const result = await pool.query(
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id ORDER BY items.name ASC"
+  );
+
+  return result.rows;
+};
 
 const getCountTotalSearchItems = async (query) => {
   let result = await pool.query(
@@ -280,14 +290,24 @@ const getStoreInventory = async (productId) => {
   return result.rows;
 };
 
-//insert into store_items
-const insertIntoStoreItems = async (storeId, itemId, quantity) => {
+//increment store items
+const incrementStoreItems = async (storeId, itemId, quantity) => {
   const query =
     "INSERT INTO store_items (store_id, item_id, quantity) VALUES ($1, $2, $3) ON CONFLICT (store_id, item_id) DO UPDATE SET quantity = store_items.quantity + $3";
   const value = [storeId, itemId, quantity];
   const result = await pool.query(query, value);
   return result.rows[0];
 };
+
+// remove item from store
+const decrementStoreItems = async (storeId, itemId, quantity) => {
+  const query =
+    "UPDATE store_items SET quantity = store_items.quantity - $3 WHERE store_id = $1 AND item_id = $2";
+  const value = [storeId, itemId, quantity];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 // add item to Global Inventory
 const addItemToInventory = async (itemId, quantity) => {
   const query =
@@ -313,6 +333,29 @@ const getMaxQuantity = async (itemId, storeId) => {
   const value = [itemId, storeId];
   const result = await pool.query(query, value);
   return result.rows[0].quantity;
+};
+
+// insert into item_movements
+const insertIntoItemMovements = async (
+  itemId,
+  fromStoreId,
+  toStoreId,
+  quantity,
+  movementType,
+  description
+) => {
+  const query =
+    "INSERT INTO item_movements (item_id, from_store_id, to_store_id, quantity, movement_type, description) VALUES ($1, $2, $3, $4, $5, $6)";
+  const value = [
+    itemId,
+    fromStoreId,
+    toStoreId,
+    quantity,
+    movementType,
+    description,
+  ];
+  const result = await pool.query(query, value);
+  return result.rows[0];
 };
 
 // get item movements
@@ -356,9 +399,12 @@ module.exports = {
   getStoreItems,
   getStoreInventory,
   getAllItemMovements,
+  insertIntoItemMovements,
   getAllProductsAlphabetically,
   getMaxQuantity,
   addItemToInventory,
   removeItemFromInventory,
-  insertIntoStoreItems,
+  incrementStoreItems,
+  decrementStoreItems,
+  getAllProductsWithCategoryAndSupplierWithoutLimit,
 };
