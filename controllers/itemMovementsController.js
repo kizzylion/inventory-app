@@ -18,11 +18,6 @@ const getAllItemActivity = async (req, res) => {
   });
 };
 
-const getItemsByStoreId = async (req, res) => {
-  const storeItems = await getStoreItems(req.params.storeId);
-  res.json(storeItems);
-};
-
 const getNewItemMovementForm = async (req, res) => {
   const products = await getAllProductsAlphabetically();
   const stores = await getAllStores();
@@ -33,7 +28,6 @@ const getNewItemMovementForm = async (req, res) => {
       return { ...store, items: await getStoreItems(store.id) };
     })
   );
-  console.log(storeItems);
   res.render("itemMovements/getNewItemMovementForm", {
     products,
     stores,
@@ -41,4 +35,13 @@ const getNewItemMovementForm = async (req, res) => {
   });
 };
 
-module.exports = { getAllItemActivity, getNewItemMovementForm };
+const addNewItemMovement = async (req, res) => {
+  console.log(req.body);
+  res.redirect("/item-movements");
+};
+
+module.exports = {
+  getAllItemActivity,
+  getNewItemMovementForm,
+  addNewItemMovement,
+};

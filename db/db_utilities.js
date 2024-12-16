@@ -306,6 +306,15 @@ const removeItemFromInventory = async (itemId, quantity) => {
   return result.rows[0];
 };
 
+// get max quantity of item in store
+const getMaxQuantity = async (itemId, storeId) => {
+  const query =
+    "SELECT quantity FROM store_items WHERE item_id = $1 AND store_id = $2";
+  const value = [itemId, storeId];
+  const result = await pool.query(query, value);
+  return result.rows[0].quantity;
+};
+
 // get item movements
 const getAllItemMovements = async () => {
   const query = `SELECT item_movements.*, items.name as item_name, items.image as item_image, from_stores.name as from_store_name, to_stores.name as to_store_name, item_movements.quantity as quantity, item_movements.movement_date as movement_date, item_movements.movement_type as movement_type, item_movements.description as description 
@@ -348,4 +357,8 @@ module.exports = {
   getStoreInventory,
   getAllItemMovements,
   getAllProductsAlphabetically,
+  getMaxQuantity,
+  addItemToInventory,
+  removeItemFromInventory,
+  insertIntoStoreItems,
 };

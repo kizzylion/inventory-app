@@ -59,8 +59,12 @@
                   </label>
                 </div>
                 <div id="quantityDiv" class="">
-                  <label for="quantity" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Quantity
-                        <input required placeholder="Quantity" type="number" value="" id="quantity" name="quantity" class="w-full h-fit text-gray-700 border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                  <label for="quantity" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">
+
+                    <div class="w-full h-fit flex flex-row items-start justify-start">
+                      <span class="text-gray-500">Quantity:</span> <a id="maxQuantity" class="inline-block text-indigo-500 hover:text-indigo-600">(Max: <span id="maxQuantity"></span>)</a>
+                    </div>
+                        <input required placeholder="Quantity" min="1" type="number" value="" id="quantity" name="quantity" class="w-full h-fit text-gray-700 border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                         <span class="error" id="quantityError" aria-live="polite"></span>
                   </label>
                 </div>
@@ -87,23 +91,150 @@
   </main>
 
 <script src="/js/storeMovement.mjs"></script>
-<script>
+<script type="module">
+  const itemMovementForm = document.getElementById("itemMovementForm");
   const fromStore = document.getElementById("fromStoreDiv").querySelector("select");
   const toStore = document.getElementById("toStoreDiv").querySelector("select");
   const itemName = document.getElementById("itemNameDiv").querySelector("select");
   const movementType = document.getElementById("movementType");
+  const quantity = document.getElementById("quantity");
+  
+  // const storeItems = <%- JSON.stringify(storeItems) %>;
+
+  movementType.addEventListener("change", () => {
+    const movementTypeValue = movementType.value;
+    if(movementTypeValue === ""){
+      return
+    }
+
+    if(movementTypeValue === "remove"){
+      toStore.setAttribute("disabled", true);
+      fromStore.removeAttribute("disabled");
+    }else if(movementTypeValue === "add"){
+      fromStore.setAttribute("disabled", true);
+      toStore.removeAttribute("disabled");
+    }else{
+      toStore.removeAttribute("disabled");
+      fromStore.removeAttribute("disabled");
+    }
+  });
+
+
+  fromStore.addEventListener("submit", async () => {
+    // console.log("fromStore", fromStore.value);
+    // const value = parseInt(fromStore.value);
+
+    // const storeItemsDiv = document.getElementById("storeItemsDiv");
+    // storeItemsDiv.innerHTML = "";
+
+    // if(value !== 9){
+    //   const filteredStoreItems = storeItems.filter(storeItem => storeItem.id === value);  
+
+    //   console.log("filteredStoreItems",filteredStoreItems);
+
+    //   filteredStoreItems.forEach(storeItem => {
+    //     storeItem.items.forEach(item => {
+    //       const option = document.createElement("option");
+    //       option.value = item.id;
+    //       option.textContent = item.name;
+    //       storeItemsDiv.appendChild(option);
+    //     });
+    //   })
+    // }else{
+    //     populateSelectItemsWithProducts();
+    // }
+
+
+  });
 
   fromStore.addEventListener("change", () => {
-    console.log("fromStore", fromStore.value);
     const value = parseInt(fromStore.value);
+    console.log("value",value);
+    if(!value){
+      return
+    }else if(value === 9 && (movementType.value === "transfer" || movementType.value === "remove")){
+      populateSelectItemsWithProducts();
+    }else if(value !== 9 && (movementType.value === "transfer" || movementType.value === "remove")){
+      populateSelectItemsWithStoreItems();
+    }
+  });
 
-    const storeItemsDiv = document.getElementById("storeItemsDiv");
-    storeItemsDiv.innerHTML = "";
+  toStore.addEventListener("change", () => {
+    const value = parseInt(toStore.value);
+    if(!value){
+      return
+    }
+    if(movementType.value === "add"){
+      populateSelectItemsWithProducts();
+    }
+
+  });
+
+  itemName.addEventListener("change", () => {
+    const itemValue = parseInt(itemName.value);
+    const fromStoreValue = parseInt(fromStore.value);
+    if(!itemValue || !fromStoreValue){
+      return
+    }
+    
+    if(fromStoreValue !== 9 && (movementType.value === "transfer" || movementType.value === "remove")){
+      getMaxQuantityFromStore(fromStoreValue, itemValue);
+    }else if(fromStoreValue === 9 && (movementType.value === "transfer" || movementType.value === "remove")){
+      getMaxQuantityFromInventory(itemValue);
+    }else if(movementType.value === "add"){
+      // remove the max quantity from the input
+      quantity.removeAttribute("max");
+      // document.getElementById("maxQuantity").textContent = "";
+    }
+  });
+
+
+
+  function getMaxQuantityFromStore(fromStoreValue, itemNameValue){
     const storeItems = <%- JSON.stringify(storeItems) %>;
-    if(value !== 9){
-    const filteredStoreItems = storeItems.filter(storeItem => storeItem.id === value);  
+
+
+    const filteredStoreItems = storeItems.filter(storeItem => storeItem.id === parseInt(fromStoreValue));
+    console.log("filteredStoreItems",filteredStoreItems);
+    // get the max quantity of the item in the from store
+    const maxQuantity = filteredStoreItems[0].items.find(item => item.id === parseInt(itemNameValue)).quantity;
+    // set the max quantity to the input
+    quantity.setAttribute("max", maxQuantity);
+    document.getElementById("maxQuantity").textContent = maxQuantity;
+  }
+
+  function getMaxQuantityFromInventory(itemNameValue){
+    const products = <%- JSON.stringify(products) %>;
+
+    const maxQuantity = products.find(product => product.id === parseInt(itemNameValue)).quantity;
+    quantity.setAttribute("max", maxQuantity);
+    document.getElementById("maxQuantity").textContent = maxQuantity;
+  }
+
+  function populateSelectItemsWithProducts(){
+    const products = <%- JSON.stringify(products) %>;
+    const storeItemsDiv = document.getElementById("storeItemsDiv");
+    console.log("products",products);
+
+    storeItemsDiv.innerHTML = "";
+
+    products.forEach(product => {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = product.name;
+        storeItemsDiv.appendChild(option);
+    });
+  }
+
+  function populateSelectItemsWithStoreItems(){
+    const fromStoreValue = parseInt(fromStore.value);
+    const storeItems = <%- JSON.stringify(storeItems) %>;
+    const storeItemsDiv = document.getElementById("storeItemsDiv");
+
+    const filteredStoreItems = storeItems.filter(storeItem => storeItem.id === fromStoreValue);  
 
     console.log("filteredStoreItems",filteredStoreItems);
+    storeItemsDiv.innerHTML = "";
 
     filteredStoreItems.forEach(storeItem => {
       storeItem.items.forEach(item => {
@@ -113,22 +244,7 @@
         storeItemsDiv.appendChild(option);
       });
     });
-  }else{
-    const products = <%- JSON.stringify(products) %>;
-    console.log("products",products);
-    products.forEach(product => {
-      const option = document.createElement("option");
-      option.value = product.id;
-      option.textContent = product.name;
-      storeItemsDiv.appendChild(option);
-    });
   }
-  });
-
-  
-
-
-
   
   
 </script>
