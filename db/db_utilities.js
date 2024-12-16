@@ -11,6 +11,11 @@ const getAllProducts = async () => {
   const result = await pool.query("SELECT * FROM items");
   return result.rows;
 };
+// get all products
+const getAllProductsAlphabetically = async () => {
+  const result = await pool.query("SELECT * FROM items ORDER BY name ASC");
+  return result.rows;
+};
 
 // get total pages
 const getTotalPages = async (query) => {
@@ -260,7 +265,7 @@ const updateStore = async (id, name, location, phone, email) => {
 // get store items
 const getStoreItems = async (storeId) => {
   const query =
-    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM store_items JOIN items ON store_items.item_id = items.id JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id WHERE store_items.store_id = $1";
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier, store_items.quantity as quantity, store_items.store_id as store_id FROM store_items JOIN items ON store_items.item_id = items.id JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id WHERE store_items.store_id = $1";
   const value = [storeId];
   const result = await pool.query(query, value);
   return result.rows;
@@ -275,6 +280,32 @@ const getStoreInventory = async (productId) => {
   return result.rows;
 };
 
+//insert into store_items
+const insertIntoStoreItems = async (storeId, itemId, quantity) => {
+  const query =
+    "INSERT INTO store_items (store_id, item_id, quantity) VALUES ($1, $2, $3) ON CONFLICT (store_id, item_id) DO UPDATE SET quantity = store_items.quantity + $3";
+  const value = [storeId, itemId, quantity];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+// add item to Global Inventory
+const addItemToInventory = async (itemId, quantity) => {
+  const query =
+    "UPDATE items SET quantity = items.quantity + $2 WHERE items.id = $1";
+  const value = [itemId, quantity];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
+// remove item from inventory
+const removeItemFromInventory = async (itemId, quantity) => {
+  const query =
+    "UPDATE items SET quantity = items.quantity - $2 WHERE items.id = $1";
+  const value = [itemId, quantity];
+  const result = await pool.query(query, value);
+  return result.rows[0];
+};
+
 // get item movements
 const getAllItemMovements = async () => {
   const query = `SELECT item_movements.*, items.name as item_name, items.image as item_image, from_stores.name as from_store_name, to_stores.name as to_store_name, item_movements.quantity as quantity, item_movements.movement_date as movement_date, item_movements.movement_type as movement_type, item_movements.description as description 
@@ -285,7 +316,6 @@ const getAllItemMovements = async () => {
     ORDER BY movement_date DESC;
     `;
   const result = await pool.query(query);
-  console.log(result.rows);
   return result.rows;
 };
 
@@ -317,4 +347,5 @@ module.exports = {
   getStoreItems,
   getStoreInventory,
   getAllItemMovements,
+  getAllProductsAlphabetically,
 };

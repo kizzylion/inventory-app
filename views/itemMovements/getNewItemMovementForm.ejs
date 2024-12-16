@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../partials/head", { title: "New Item Movement" }) %>
+<body class="bg-gray-100 flex relative flex-col h-dvh w-screen max-w-screen lg:flex-row">
+  <%- include("../partials/nav", { active: "itemMovements" }) %>
+  <main class="w-full  h-full relative flex flex-col items-start justify-start gap-5 lg:gap-8 overflow-x-hidden overflow-y-auto ">
+    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8 ">
+      <div class="container gap-4 lg:gap-5 px-4 md:px-8 h-fit flex flex-col ">
+        <div id="breadcrumbs" class="flex items-center gap-2 h-fit">
+          <a href="/" class="text-xs lg:text-sm text-gray-500 hover:text-gray-900">Home</a>
+          <span class="text-xs lg:text-sm text-gray-500">&gt;</span>
+          <span class="text-xs lg:text-sm text-gray-900 font-medium">Item Movements</span>
+        </div>
+        <%- include("../partials/mainTitle", { title: "New Item Movement", subtitle: "Add a new item movement here" }) %>
+      </div>
+    </section>
+
+
+    <section id="itemMovementSection" class="w-full max-w-4xl h-fit flex flex-col items-start justify-start ">
+      <div class="w-full h-fit flex flex-col px-4 md:px-8">
+        <form action="/item-movements/new" method="post" id="itemMovementForm" class=" @container w-full h-full flex flex-col py-4">
+            <input type="hidden" id="editPassword" name="editPassword">
+            <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-8 mb-8">
+                <label for="movementType" id="movementTypeLabel" class="text-sm text-gray-500 mb-1">Movement Type
+                    <select id="movementType" required class="w-full h-fit border border-gray-200 p-2 rounded-lg" name="movementType">
+                        <option value="">Select Movement Type</option>
+                        <option value="transfer">Transfer</option>
+                        <option value="add">Add</option>
+                        <option value="remove">Remove</option>
+                    </select>
+                </label>
+                <div class="flex flex-col items-start justify-start gap-4"></div>
+                <div id="fromStoreDiv" class="">
+                  <label for="fromStore" class="text-sm text-gray-500 mb-1">From Store
+                  <select id="fromStore"  class="w-full h-fit border border-gray-200 p-2 rounded-lg" name="fromStore">
+                      <option value="" >Select Store</option>
+                      <% stores.forEach(store => { %>
+                      <option value="<%= store.id %>"><%= store.name %></option>
+                      <% }) %>
+                  </select>
+                  </label>
+                </div>
+                <div id="toStoreDiv" class="">
+                  <label for="toStore" class="text-sm text-gray-500 mb-1">To Store
+                  <select id="toStore"  class="w-full h-fit border border-gray-200 p-2 rounded-lg" name="toStore">
+                      <option value="">Select Store</option>
+                      <% stores.forEach(store => { %>
+                      <option value="<%= store.id %>"><%= store.name %></option>
+                      <% }) %>
+                  </select>
+                  </label>
+                </div>
+                <div id="itemNameDiv" class="">
+                  <label for="itemName" class="text-sm text-gray-500 mb-1">Select Item
+                    <select id="itemName"  class="w-full h-fit border border-gray-200 p-2 rounded-lg" name="itemName">
+                        <option value="">Select Item</option>
+                        <optgroup label="Store Items" id="storeItemsDiv"></optgroup>
+                    </select>
+                  </label>
+                </div>
+                <div id="quantityDiv" class="">
+                  <label for="quantity" class="w-full h-fit flex flex-col items-start justify-start text-gray-700">Quantity
+                        <input required placeholder="Quantity" type="number" value="" id="quantity" name="quantity" class="w-full h-fit text-gray-700 border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <span class="error" id="quantityError" aria-live="polite"></span>
+                  </label>
+                </div>
+                <label for="description" class="w-full h-fit flex flex-col items-start justify-start text-gray-700 col-span-2">Description
+                    <textarea  placeholder="Enter Description" type="text" value="" minlength="5" id="description" name="description" class="w-full h-fit text-gray-700 border border-gray-300 rounded-md px-[0.875em] py-[0.625em] text-gray-500 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"></textarea>
+                    <span class="error" id="descriptionError" aria-live="polite"></span>
+                </label>
+            </div>
+            <div class="content h-fit flex flex-col @[400px]:grid  @[400px]:grid-cols-2 gap-4">
+                <!-- cancel button -->
+                <a href="/item-movements" class="bg-white text-gray-500 px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-gray-100">
+                Cancel
+                </a>
+                <!-- add product button -->
+                <button type="submit"    id="submitButton" class="bg-indigo-500 text-white px-3 py-[0.625em] rounded-lg border flex justify-center items-center border-gray-200 text-sm text-nowrap text-center hover:bg-indigo-600">
+                Submit
+               </button>
+            </div>
+        </form>
+      </div>
+    </section>
+
+    
+  </main>
+
+<script src="/js/storeMovement.mjs"></script>
+<script>
+  const fromStore = document.getElementById("fromStoreDiv").querySelector("select");
+  const toStore = document.getElementById("toStoreDiv").querySelector("select");
+  const itemName = document.getElementById("itemNameDiv").querySelector("select");
+  const movementType = document.getElementById("movementType");
+
+  fromStore.addEventListener("change", () => {
+    console.log("fromStore", fromStore.value);
+    const value = parseInt(fromStore.value);
+
+    const storeItemsDiv = document.getElementById("storeItemsDiv");
+    storeItemsDiv.innerHTML = "";
+    const storeItems = <%- JSON.stringify(storeItems) %>;
+    if(value !== 9){
+    const filteredStoreItems = storeItems.filter(storeItem => storeItem.id === value);  
+
+    console.log("filteredStoreItems",filteredStoreItems);
+
+    filteredStoreItems.forEach(storeItem => {
+      storeItem.items.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.id;
+        option.textContent = item.name;
+        storeItemsDiv.appendChild(option);
+      });
+    });
+  }else{
+    const products = <%- JSON.stringify(products) %>;
+    console.log("products",products);
+    products.forEach(product => {
+      const option = document.createElement("option");
+      option.value = product.id;
+      option.textContent = product.name;
+      storeItemsDiv.appendChild(option);
+    });
+  }
+  });
+
+  
+
+
+
+  
+  
+</script>
+</body>
+</html>

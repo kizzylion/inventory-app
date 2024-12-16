@@ -78,7 +78,7 @@
                    <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em]"><%= new Date(store.date_created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })  %></td>
                   <!-- edit and delete buttons -->
                   <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em] gap-2  right-0 ">
-                    <div class=" w-fit h-fit flex mx-auto items-center justify-center gap-3">
+                    <div class=" w-fit h-fit flex mx-auto items-center justify-center gap-3 <%= store.id === 9 ? 'hidden' : '' %>">
                       
                       <!-- view inventory button -->
                       <a href="/stores/view/<%= store.id %>" class="text-indigo-500 flex w-fit items-center justify-center gap-1 hover:text-indigo-600">
@@ -107,7 +107,7 @@
                     </div>
 
                       <!-- add vertical dots for more actions -->
-                    <div id="moreActions" class="hidden w-fit h-fit flex flex-col items-start justify-start gap-1 ml-auto relative ">
+                    <div id="moreActions" class="hidden w-fit h-fit flex flex-col items-start justify-start gap-1 ml-auto relative  ">
                       <button id="moreActionsButton" class="text-gray-500 flex w-fit items-center justify-center gap-1 hover:text-gray-900">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                           <path d="M9.5 13a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0-5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0-5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
