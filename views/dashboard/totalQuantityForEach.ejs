@@ -4,7 +4,7 @@
 <body class="bg-gray-100 flex relative flex-col h-dvh w-screen max-w-screen lg:flex-row">
   <%- include("../partials/nav", { active: "dashboard" }) %>
   <main class="w-full  h-full relative flex flex-col items-start justify-start gap-5 lg:gap-8 overflow-x-hidden overflow-y-auto ">
-    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8 ">
+    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8 lg:sticky top-0 z-[60]">
       <div class="container gap-4 lg:gap-5 px-4 md:px-8 h-fit flex flex-col ">
         <div id="breadcrumbs" class="flex items-center gap-2 h-fit">
           <a href="/" class="text-xs lg:text-sm text-gray-500 hover:text-gray-900">Dashboard</a>
@@ -15,9 +15,15 @@
       </div>
     </section>
   
-    <section class="w-full max-w-screen h-fit flex flex-col items-start justify-start mb-5">
+    <section class="w-full max-w-xl h-fit flex flex-col items-start justify-start mb-5">
       <div class="w-full h-fit flex flex-col px-4 md:px-8">
         <div id="productsTable" class="w-full h-fit flex flex-col items-start justify-start">
+          <div class="w-full h-fit flex flex-col items-start justify-start">
+            <div class="w-full h-fit flex flex-row items-center justify-between mb-2">
+              <p class="text-sm text-gray-500">Total Quantity: <span class="text-gray-900 font-medium"><%= totalQuantityEachItem.reduce((acc, item) => acc + parseInt(item.total_quantity), 0) %></span></p>
+              <p class="text-sm text-gray-500">Total Value: <span class="text-gray-900 font-medium"><%= totalQuantityEachItem.reduce((acc, item) => acc + parseFloat(item.total_price), 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></span></p>
+            </div>
+          </div>
           <table class="w-full h-full flex relative flex-col bg-white rounded-lg overflow-auto border border-gray-200">
             <thead class="w-max min-w-full h-fit sticky top-0 z-20 bg-gray-200">
               <tr class="w-max min-w-full h-fit flex flex-row ">
@@ -60,6 +66,13 @@
               <% }) %>
                        
             </tbody>
+            <tfoot class="w-max min-w-full h-fit flex flex-col items-start justify-start sticky bottom-0 z-[10]">
+              <tr class="table-row w-fit min-w-full h-fit flex flex-row">
+                <td class="table-footer text-sm text-gray-500 w-[20em] max-w-[20em] px-4 sticky left-0 z-10"> Total: <span class="text-gray-900 font-medium w-fit h-fit"><%= totalQuantityEachItem.length %></span> items</td>
+                <td class="table-footer text-sm text-gray-500 w-[5em] max-w-[5em] text-right pr-4"><%= totalQuantityEachItem.reduce((acc, item) => acc + parseInt(item.total_quantity), 0) %></td>
+                <td class="table-footer text-sm text-gray-500 w-[10em] max-w-[10em] text-right pr-4"> <%= totalQuantityEachItem.reduce((acc, item) => acc + parseFloat(item.total_price), 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></td>
+              </tr>
+            </tfoot>
             
           </table>
         </div>

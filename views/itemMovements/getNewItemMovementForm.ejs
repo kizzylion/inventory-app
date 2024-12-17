@@ -18,7 +18,7 @@
     </section>
 
 
-    <section id="itemMovementSection" class="w-full max-w-4xl h-fit flex flex-col items-start justify-start ">
+    <section id="itemMovementSection" class="w-full max-w-4xl h-fit flex flex-col items-start justify-start lg:sticky bottom-0 z-[60]">
       <div class="w-full h-fit flex flex-col px-4 md:px-8">
         <form action="/item-movements/new" method="post" id="itemMovementForm" class=" @container w-full h-full flex flex-col py-4">
             <input type="hidden" id="editPassword" name="editPassword">
@@ -89,7 +89,8 @@
       </div>
     </section>
 
-    
+    <!-- footer -->
+    <%- include("../partials/footer") %>
   </main>
 
 <script src="/js/storeMovement.mjs"></script>
