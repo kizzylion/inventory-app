@@ -23,8 +23,7 @@ const getDashboard = async (req, res) => {
   const recentItemsInInventory = await getRecentItemsInInventory();
   const recentMovements = await getRecentMovements();
 
-  console.log(recentItemsInInventory);
-  console.log(recentMovements);
+  console.log(totalQuantityEachItem);
 
   res.render("index", {
     totalQuantityEachItem,
@@ -33,6 +32,13 @@ const getDashboard = async (req, res) => {
     quantityDistributionAcrossStores,
     recentItemsInInventory,
     recentMovements,
+  });
+};
+
+const getTotalQtyEachItem = async (req, res) => {
+  const totalQuantityEachItem = await getTotalQuantityEachItem();
+  res.render("dashboard/totalQuantityForEach", {
+    totalQuantityEachItem,
   });
 };
 
@@ -92,4 +98,9 @@ const getSearchProducts = async (req, res) => {
   });
 };
 
-module.exports = { getDashboard, getProducts, getSearchProducts };
+module.exports = {
+  getDashboard,
+  getProducts,
+  getSearchProducts,
+  getTotalQtyEachItem,
+};

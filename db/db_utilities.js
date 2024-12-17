@@ -27,7 +27,7 @@ const getTotalQuantity = async () => {
 };
 const getTotalQuantityEachItem = async () => {
   const result = await pool.query(`
-    SELECT items.name AS item_name, items.supplier_id AS supplier_id, suppliers.name AS supplier_name, items.id AS item_id, items.price AS item_price, COALESCE(SUM(items.quantity), 0) + COALESCE(SUM(store_items.quantity), 0) AS total_quantity, items.price * (COALESCE(SUM(items.quantity), 0) + COALESCE(SUM(store_items.quantity), 0)) AS total_price
+    SELECT items.name AS item_name, items.image AS item_image, items.supplier_id AS supplier_id, suppliers.name AS supplier_name, items.id AS item_id, items.price AS item_price, COALESCE(SUM(items.quantity), 0) + COALESCE(SUM(store_items.quantity), 0) AS total_quantity, items.price * (COALESCE(SUM(items.quantity), 0) + COALESCE(SUM(store_items.quantity), 0)) AS total_price
     FROM items
     JOIN suppliers ON items.supplier_id = suppliers.id
     LEFT JOIN store_items ON items.id = store_items.item_id
