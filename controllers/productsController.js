@@ -151,7 +151,7 @@ const getProductById = async (req, res) => {
 
   // get store inventory
   const storeInventory = await getStoreInventory(product.id);
-  console.log(storeInventory);
+  // console.log(storeInventory);
 
   res.render("productDetails", { product, storeInventory });
 };
