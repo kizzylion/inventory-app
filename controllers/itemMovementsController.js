@@ -13,7 +13,7 @@ const {
 const getAllItemActivity = async (req, res) => {
   const itemMovements = await getAllItemMovements();
   const search = req.query.search || "";
-  console.log(search);
+  // console.log(search);
   const filteredItemMovements = itemMovements.filter((itemMovement) =>
     itemMovement.item_name.toLowerCase().includes(search.toLowerCase())
   );
@@ -49,15 +49,6 @@ const addNewItemMovement = async (req, res) => {
   itemId = parseInt(itemId);
   quantity = parseInt(quantity);
 
-  console.log(
-    movementType,
-    fromStoreId,
-    toStoreId,
-    itemId,
-    quantity,
-    description
-  );
-
   if (movementType === "add" && toStoreId === 9) {
     // add to inventory
     const addToInventory = await addItemToInventory(itemId, quantity);
@@ -72,9 +63,9 @@ const addNewItemMovement = async (req, res) => {
       "Added to inventory"
     );
 
-    console.log(addToInventory);
-    console.log(insertToItemMovements);
-    console.log("success");
+    // console.log(addToInventory);
+    // console.log(insertToItemMovements);
+    // console.log("success");
     res.redirect("/item-movements");
   }
 
@@ -92,9 +83,9 @@ const addNewItemMovement = async (req, res) => {
       `Removed from inventory`
     );
 
-    console.log(removeFromInventory);
-    console.log(insertToItemMovements);
-    console.log("success");
+    // console.log(removeFromInventory);
+    // console.log(insertToItemMovements);
+    // console.log("success");
     res.redirect("/item-movements");
   }
 
@@ -117,9 +108,9 @@ const addNewItemMovement = async (req, res) => {
       description
     );
 
-    console.log(addToInventory);
-    console.log(insertToItemMovements);
-    console.log("success");
+    // console.log(addToInventory);
+    // console.log(insertToItemMovements);
+    // console.log("success");
     res.redirect("/item-movements");
   }
 
@@ -142,9 +133,9 @@ const addNewItemMovement = async (req, res) => {
       description
     );
 
-    console.log(removeFromInventory);
-    console.log(insertToItemMovements);
-    console.log("success");
+    // console.log(removeFromInventory);
+    // console.log(insertToItemMovements);
+    // console.log("success");
     res.redirect("/item-movements");
   }
 
@@ -176,9 +167,9 @@ const addNewItemMovement = async (req, res) => {
       description
     );
 
-    console.log(transferFromStore);
-    console.log(transferToStore);
-    console.log("success");
+    // console.log(transferFromStore);
+    // console.log(transferToStore);
+    // console.log("success");
     res.redirect("/item-movements");
   }
   if (movementType === "transfer" && fromStoreId === 9 && toStoreId !== 9) {
@@ -203,10 +194,10 @@ const addNewItemMovement = async (req, res) => {
       description
     );
 
-    console.log(transferFromInventory);
-    console.log(transferToStore);
-    console.log(insertToItemMovements);
-    console.log("success");
+    // console.log(transferFromInventory);
+    // console.log(transferToStore);
+    // console.log(insertToItemMovements);
+    // console.log("success");
     res.redirect("/item-movements");
   }
 
@@ -229,10 +220,10 @@ const addNewItemMovement = async (req, res) => {
       description
     );
 
-    console.log(transferFromStore);
-    console.log(transferToInventory);
-    console.log(insertToItemMovements);
-    console.log("success");
+    // console.log(transferFromStore);
+    // console.log(transferToInventory);
+    // console.log(insertToItemMovements);
+    // console.log("success");
     res.redirect("/item-movements");
   }
 

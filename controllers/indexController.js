@@ -23,7 +23,7 @@ const getDashboard = async (req, res) => {
   const recentItemsInInventory = await getRecentItemsInInventory();
   const recentMovements = await getRecentMovements();
 
-  console.log(totalQuantityEachItem);
+  // console.log(totalQuantityEachItem);
 
   res.render("index", {
     totalQuantityEachItem,
