@@ -11,6 +11,78 @@ const getAllProducts = async () => {
   const result = await pool.query("SELECT * FROM items");
   return result.rows;
 };
+
+const getItemInStock = async () => {
+  const result = await pool.query("SELECT COUNT(*) FROM items");
+  return result.rows[0].count;
+};
+
+const getTotalQuantity = async () => {
+  const result = await pool.query(`
+    SELECT COALESCE(SUM(items.quantity), 0) + COALESCE(SUM(store_items.quantity), 0) AS total_quantity
+    FROM items
+    LEFT JOIN store_items ON items.id = store_items.item_id;
+    `);
+  return result.rows[0].total_quantity;
+};
+const getTotalQuantityEachItem = async () => {
+  const result = await pool.query(`
+    SELECT items.name AS item_name, items.supplier_id AS supplier_id, suppliers.name AS supplier_name, items.id AS item_id, items.price AS item_price, COALESCE(SUM(items.quantity), 0) + COALESCE(SUM(store_items.quantity), 0) AS total_quantity, items.price * (COALESCE(SUM(items.quantity), 0) + COALESCE(SUM(store_items.quantity), 0)) AS total_price
+    FROM items
+    JOIN suppliers ON items.supplier_id = suppliers.id
+    LEFT JOIN store_items ON items.id = store_items.item_id
+    GROUP BY items.id, suppliers.id, items.price, items.name, suppliers.name
+    ORDER BY total_quantity DESC;
+
+    `);
+  return result.rows;
+};
+
+// items per category with total quantity and total price
+const getItemsPerCategory = async () => {
+  const result = await pool.query(
+    `
+    Select items.category_id, categories.name as category_name, (COALESCE(SUM(items.quantity), 0) + COALESCE(SUM(store_items.quantity), 0)) AS total_quantity, SUM((COALESCE(items.quantity, 0) + COALESCE(store_items.quantity, 0)) * COALESCE(items.price, 0)) AS total_price
+    FROM items
+    Left Join store_items ON items.id = store_items.item_id
+    Left Join categories ON items.category_id = categories.id
+    Group By items.category_id, categories.id
+    Order By total_quantity DESC
+    `
+  );
+  return result.rows;
+};
+
+// Quantity and Price Distribution across Stores
+const getQuantityDistributionAcrossStores = async () => {
+  const result = await pool.query(
+    `
+    SELECT stores.id, stores.name, SUM(store_items.quantity) AS total_quantity, SUM(items.price * store_items.quantity) AS total_price FROM stores 
+    JOIN store_items ON stores.id = store_items.store_id 
+    JOIN items ON store_items.item_id = items.id
+    GROUP BY stores.id 
+    ORDER BY total_quantity DESC
+    `
+  );
+  return result.rows;
+};
+
+// recent 5  items in inventory
+const getRecentItemsInInventory = async () => {
+  const result = await pool.query(
+    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id ORDER BY items.id ASC LIMIT 5"
+  );
+  return result.rows;
+};
+
+// recent 5 movements
+const getRecentMovements = async () => {
+  const result = await pool.query(
+    "SELECT item_movements.*, items.name as item_name, items.image as item_image, from_stores.name as from_store_name, to_stores.name as to_store_name, item_movements.quantity as quantity, item_movements.movement_date as movement_date, item_movements.movement_type as movement_type, item_movements.description as description FROM item_movements JOIN items ON item_movements.item_id = items.id JOIN stores AS from_stores ON item_movements.from_store_id = from_stores.id JOIN stores AS to_stores ON item_movements.to_store_id = to_stores.id ORDER BY movement_date DESC LIMIT 5"
+  );
+  return result.rows;
+};
+
 // get all products
 const getAllProductsAlphabetically = async () => {
   const result = await pool.query("SELECT * FROM items ORDER BY name ASC");
@@ -407,4 +479,13 @@ module.exports = {
   incrementStoreItems,
   decrementStoreItems,
   getAllProductsWithCategoryAndSupplierWithoutLimit,
+
+  // Dashboard
+  getItemInStock,
+  getTotalQuantity,
+  getTotalQuantityEachItem,
+  getItemsPerCategory,
+  getQuantityDistributionAcrossStores,
+  getRecentItemsInInventory,
+  getRecentMovements,
 };

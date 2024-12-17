@@ -3,13 +3,37 @@ const {
   getSearchItems,
   getTotalPages,
   getCountTotalSearchItems,
+  getTotalQuantityEachItem,
+  getAllStores,
+  getItemsPerCategory,
+  getQuantityDistributionAcrossStores,
+  getRecentItemsInInventory,
+  getRecentMovements,
 } = require("../db/db_utilities");
 const { getArrayOfIdAndName } = require("../public/js/utilities.js");
 
 const { route } = require("../routes/indexRouter");
 
-const getDashboard = (req, res) => {
-  res.render("index");
+const getDashboard = async (req, res) => {
+  const totalQuantityEachItem = await getTotalQuantityEachItem();
+  const stores = await getAllStores();
+  const itemsPerCategory = await getItemsPerCategory();
+  const quantityDistributionAcrossStores =
+    await getQuantityDistributionAcrossStores();
+  const recentItemsInInventory = await getRecentItemsInInventory();
+  const recentMovements = await getRecentMovements();
+
+  console.log(recentItemsInInventory);
+  console.log(recentMovements);
+
+  res.render("index", {
+    totalQuantityEachItem,
+    stores,
+    itemsPerCategory,
+    quantityDistributionAcrossStores,
+    recentItemsInInventory,
+    recentMovements,
+  });
 };
 
 const getProducts = async (req, res, next) => {

@@ -3,8 +3,209 @@
   <%- include("partials/head", { title: "Home" }) %>
 <body class="bg-gray-100 flex flex-col min-h-screen overflow-hidden lg:flex-row">
   <%- include("partials/nav", { active: "dashboard" }) %>
-  <main>
-    <h1>Welcome to Dashboard</h1>
+  <main class="w-full  h-full relative flex flex-col items-start justify-start gap-5 lg:gap-8 overflow-x-hidden overflow-y-auto pb-10 ">
+    <section id="main-header" class="w-full bg-white h-fit flex flex-col items-start justify-start pt-5 lg:pt-8 ">
+      <div class="container gap-4 lg:gap-5 px-4 md:px-8 h-fit flex flex-col ">
+        <div id="main-title" class="w-full h-fit flex flex-col items-start justify-start">
+          <h1 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">Hello, Welcome to the dashboard 👋</h1>
+          <p class="text-sm text-gray-500">Value of all Items in Stock is : <span class="text-indigo-600 font-bold text-base"><%= totalQuantityEachItem.reduce((acc, item) => acc + parseInt(item.total_price), 0).toLocaleString('en-US',{style: 'currency', currency: 'USD'}) %> </span> </p>
+        </div>
+        <div class="w-full h-fit flex flex-col items-start justify-start gap-4">
+          <div class="text-gray-900 text-gray-500 font-semibold text-lg">
+            
+          </div>  
+        </div>
+      </div>
+    </section>
+    
+
+    <section id="dashboard" class="w-full h-fit flex flex-col items-start justify-start ">
+      <div class="@container w-full h-fit flex flex-col px-4 md:px-8">
+        <div id="dashboard" class="grid grid-cols-1 @[320px]:grid-cols-2 @[678px]:grid-cols-4 gap-4">
+          <a href="/products" class="card bg-white rounded-lg shadow-sm p-4 w-full border-1 border-gray-200 hover:bg-gray-50 transition-all duration-300">
+            <div class="card-header flex items-center justify-between mb-2">
+              <h3 class="card-title text-gray-900 font-medium text-sm ">Item in Stock </h3>
+              <div class="icon flex items-center justify-center bg-indigo-600 rounded-full p-1 w-fit h-fit">
+                <svg class="text-white" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="fill-indigo-100" d="M18.3333 2.5H1.66663V7.5H2.49996V16.6667C2.49996 17.1087 2.67555 17.5326 2.98811 17.8452C3.30068 18.1577 3.7246 18.3333 4.16663 18.3333H15.8333C16.2753 18.3333 16.6992 18.1577 17.0118 17.8452C17.3244 17.5326 17.5 17.1087 17.5 16.6667V7.5H18.3333V2.5ZM3.33329 4.16667H16.6666V5.83333H3.33329V4.16667ZM15.8333 16.6667H4.16663V7.5H15.8333V16.6667ZM7.49996 9.16667H12.5C12.5 9.60869 12.3244 10.0326 12.0118 10.3452C11.6992 10.6577 11.2753 10.8333 10.8333 10.8333H9.16663C8.7246 10.8333 8.30068 10.6577 7.98811 10.3452C7.67555 10.0326 7.49996 9.60869 7.49996 9.16667Z" fill=""/>
+                </svg>
+              </div>
+            </div>
+            <div class="card-body">
+              <!-- length of totalQuantityEachItem -->
+              <p class="card-text text-gray-900 text-indigo-600 font-semibold text-4xl"><%= totalQuantityEachItem.length %> <span class="text-gray-500 text-sm">items(s)</span></p>
+            </div>
+          </a>
+          <a href="/products" class="card bg-white rounded-lg shadow-sm p-4 w-full border-1 border-gray-200 hover:bg-gray-50 transition-all duration-300">
+            <div class="card-header flex items-center justify-between mb-2">
+              <h3 class="card-title text-gray-900 font-medium text-sm ">Total Quantity 
+              </h3>
+              <div class="icon flex items-center justify-center bg-red-600 rounded-full p-1 w-fit h-fit">
+                <svg class="text-white" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="fill-red-100" d="M18.3333 2.5H1.66663V7.5H2.49996V16.6667C2.49996 17.1087 2.67555 17.5326 2.98811 17.8452C3.30068 18.1577 3.7246 18.3333 4.16663 18.3333H15.8333C16.2753 18.3333 16.6992 18.1577 17.0118 17.8452C17.3244 17.5326 17.5 17.1087 17.5 16.6667V7.5H18.3333V2.5ZM3.33329 4.16667H16.6666V5.83333H3.33329V4.16667ZM15.8333 16.6667H4.16663V7.5H15.8333V16.6667ZM7.49996 9.16667H12.5C12.5 9.60869 12.3244 10.0326 12.0118 10.3452C11.6992 10.6577 11.2753 10.8333 10.8333 10.8333H9.16663C8.7246 10.8333 8.30068 10.6577 7.98811 10.3452C7.67555 10.0326 7.49996 9.60869 7.49996 9.16667Z" fill=""/>
+                </svg>
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="card-text text-gray-900 text-indigo-600 font-semibold text-4xl"><%= totalQuantityEachItem.reduce((acc, item) => acc + parseInt(item.total_quantity), 0) %></p>
+            </div>
+          </a>
+          <a href="/stores" class="card bg-white rounded-lg shadow-sm p-4 w-full border-1 border-gray-200 hover:bg-gray-50 transition-all duration-300">
+            <div class="card-header flex items-center justify-between mb-2">
+              <h3 class="card-title text-gray-900 font-medium text-sm ">Stores
+              </h3>
+              <div class="icon flex items-center justify-center bg-orange-600 rounded-full p-1 w-fit h-fit">
+                <svg class="text-white" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="fill-orange-100" d="M18.3333 2.5H1.66663V7.5H2.49996V16.6667C2.49996 17.1087 2.67555 17.5326 2.98811 17.8452C3.30068 18.1577 3.7246 18.3333 4.16663 18.3333H15.8333C16.2753 18.3333 16.6992 18.1577 17.0118 17.8452C17.3244 17.5326 17.5 17.1087 17.5 16.6667V7.5H18.3333V2.5ZM3.33329 4.16667H16.6666V5.83333H3.33329V4.16667ZM15.8333 16.6667H4.16663V7.5H15.8333V16.6667ZM7.49996 9.16667H12.5C12.5 9.60869 12.3244 10.0326 12.0118 10.3452C11.6992 10.6577 11.2753 10.8333 10.8333 10.8333H9.16663C8.7246 10.8333 8.30068 10.6577 7.98811 10.3452C7.67555 10.0326 7.49996 9.60869 7.49996 9.16667Z" fill=""/>
+                </svg>
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="card-text text-gray-900 text-indigo-600 font-semibold text-4xl"><%= stores.length %></p>
+            </div>
+          </a>
+          <a href="/categories" class="card bg-white rounded-lg shadow-sm p-4 w-full border-1 border-gray-200 hover:bg-gray-50 transition-all duration-300">
+            <div class="card-header flex items-center justify-between mb-2">
+              <h3 class="card-title text-gray-900 font-medium text-sm ">Categories 
+              </h3>
+              <div class="icon flex items-center justify-center bg-blue-600 rounded-full p-1 w-fit h-fit">
+                <svg class="text-blue-100" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="fill-indigo-100" d="M18.3333 2.5H1.66663V7.5H2.49996V16.6667C2.49996 17.1087 2.67555 17.5326 2.98811 17.8452C3.30068 18.1577 3.7246 18.3333 4.16663 18.3333H15.8333C16.2753 18.3333 16.6992 18.1577 17.0118 17.8452C17.3244 17.5326 17.5 17.1087 17.5 16.6667V7.5H18.3333V2.5ZM3.33329 4.16667H16.6666V5.83333H3.33329V4.16667ZM15.8333 16.6667H4.16663V7.5H15.8333V16.6667ZM7.49996 9.16667H12.5C12.5 9.60869 12.3244 10.0326 12.0118 10.3452C11.6992 10.6577 11.2753 10.8333 10.8333 10.8333H9.16663C8.7246 10.8333 8.30068 10.6577 7.98811 10.3452C7.67555 10.0326 7.49996 9.60869 7.49996 9.16667Z" fill=""/>
+                </svg>
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="card-text text-gray-900 text-indigo-600 font-semibold text-4xl"><%= itemsPerCategory.length %></p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section id="tables" class="w-full h-fit flex flex-col items-start justify-start mt-5">
+      <div class="@container w-full h-fit flex flex-col px-4 md:px-8">
+        <div id="tables-section" class="grid grid-cols-1 @[678px]:grid-cols-2 gap-4">
+          <div class="itemsPerCategory bg-white rounded-lg shadow-sm p-4 w-full border-1 border-gray-200">
+            <h3 class="text-gray-900 font-medium text-sm mb-2">Items Per Category
+            </h3>
+            <div class="itemsPerCategory-body">
+              <table class="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th class="table-header text-left text-sm text-gray-500 sticky left-0 z-[11] w-[10em] max-w-[10em]">Category</th>
+                    <th class="table-header text-center text-sm text-gray-500 sticky left-0 z-[11] w-[10em] max-w-[10em] ">Tot Qty</th>
+                    <th class="table-header text-sm text-gray-500 text-right sticky left-0 z-[11] w-[10em] max-w-[10em] text-nowrap">Tot Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% itemsPerCategory.forEach(item => { %>
+                    <tr class="table-row w-fit h-fit flex flex-row w-max min-w-full overflow-visible relative">
+                      <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em]"><%= item.category_name %></td>
+                      <td class="table-data text-sm text-center text-gray-900 w-[10em] max-w-[10em]"><%= item.total_quantity %></td>
+                      <td class="table-data text-sm text-right text-gray-900 w-[10em] max-w-[10em]"><%= parseFloat(item.total_price).toLocaleString('en-US',{style: 'currency', currency: 'USD'}) %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+          <div class="quantityDistributionAcrossStores bg-white rounded-lg shadow-sm p-4 w-full border-1 border-gray-200">
+            <h3 class="text-gray-900 font-medium text-sm mb-2">Quantity Distribution Across Stores
+            </h3>
+            <div class="quantityDistributionAcrossStores-body">
+              <table class="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th class="table-header text-left text-sm text-gray-500 sticky left-0 z-[11] w-[10em] max-w-[10em]">Store Name</th>
+                    <th class="table-header text-center text-sm text-gray-500 sticky left-0 z-[11] w-[10em] max-w-[10em] ">Tot Qty</th>
+                    <th class="table-header text-sm text-gray-500 text-right sticky left-0 z-[11] w-[10em] max-w-[10em] text-nowrap">Tot Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% quantityDistributionAcrossStores.forEach(item => { %>
+                    <tr class="table-row w-fit h-fit flex flex-row w-max min-w-full overflow-visible relative">
+                      <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em]"><a href="/stores/view/<%= item.id %>" class="text-gray-700 hover:text-indigo-600 hover:underline"><%= item.name %></a></td>
+                      <td class="table-data text-sm text-center text-gray-900 w-[10em] max-w-[10em]"><%= item.total_quantity %></td>
+                      <td class="table-data text-sm text-right text-gray-900 w-[10em] max-w-[10em]"><%= parseFloat(item.total_price).toLocaleString('en-US',{style: 'currency', currency: 'USD'}) %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="tables-2" class="w-full h-fit flex flex-col items-start justify-start mt-5 mb-10">
+      <div class="@container w-full h-fit flex flex-col px-4 md:px-8">
+        <div id="tables-section" class="grid grid-cols-1">
+          <div class="recentItems bg-white rounded-lg shadow-sm p-4 w-full border-1 border-gray-200">
+            <h3 class="text-gray-900 font-medium text-sm mb-2">Recent Items
+            </h3>
+            <div class="recentItems-body w-full h-fit flex flex-col items-start justify-start overflow-x-scroll">
+              <table class="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th class="table-header text-left text-sm text-gray-500 sticky left-0 z-[11] w-[10em] max-w-[10em]">Name</th>
+                    <th class="table-header text-lefttext-sm text-gray-500 w-[10em] max-w-[10em] ">Category</th>
+                    <th class="table-header text-sm text-gray-500 text-right w-[10em] max-w-[10em] text-nowrap">Qty</th>
+                    <th class="table-header text-sm text-gray-500 text-right w-[10em] max-w-[10em] text-nowrap">Supplier</th>
+                    <th class="table-header text-sm text-gray-500 text-right w-[10em] max-w-[10em] text-nowrap">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% recentItemsInInventory.forEach(item => { %> 
+                    <tr class="table-row w-fit h-fit flex flex-row w-max min-w-full overflow-visible relative">
+                      <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em] sticky left-0 z-[11]  "><a href="/products/view/<%= item.id %>" class="text-gray-700 hover:text-indigo-600 hover:underline"><%= item.name %></a></td>
+                      <td class="table-data text-sm text-left text-gray-900 w-[10em] max-w-[10em]"><%= item.category %></td>
+                      <td class="table-data text-sm text-right text-gray-900 w-[10em] max-w-[10em]"><%= item.quantity %></td>
+                      <td class="table-data text-sm text-right text-gray-900 w-[10em] max-w-[10em]"><%= item.supplier %></td>
+                      <td class="table-data text-sm text-right text-gray-900 w-[10em] max-w-[10em]"><%= new Date(item.date_created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })  %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="recentMovements bg-white rounded-lg shadow-sm p-4 w-full border-1 border-gray-200 mt-5">
+            <h3 class="text-gray-900 font-medium text-sm mb-2">Recent Movements
+            </h3>
+            <div class="recentMovements-body w-full h-fit flex flex-col items-start justify-start overflow-x-scroll">
+              <table class="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th class="table-header text-left text-sm text-gray-500 sticky left-0 z-[11] w-[10em] max-w-[10em]">Item Name</th>
+                    <th class="table-header text-center text-sm text-gray-500  w-[10em] max-w-[10em] ">Type</th>
+                    <th class="table-header text-center text-sm text-gray-500  w-[10em] max-w-[10em] ">From</th>
+                    <th class="table-header text-center text-sm text-gray-500  w-[10em] max-w-[10em] ">To</th>
+                    <th class="table-header text-sm text-gray-500 text-right  w-[10em] max-w-[10em] text-nowrap">Qty</th>
+                    <th class="table-header text-sm text-gray-500 text-right  w-[10em] max-w-[10em] text-nowrap">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% recentMovements.forEach(item => { %>
+                    <tr class="table-row w-fit h-fit flex flex-row w-max min-w-full overflow-visible relative">
+                      <td class="table-data text-sm text-gray-900 w-[10em] max-w-[10em] sticky left-0 z-[11]"><a href="/products/view/<%= item.id %>" class="text-gray-700 hover:text-indigo-600 hover:underline"><%= item.item_name %></a></td>
+                      <!-- movement type -->
+                      <td class="table-data text-sm text-center text-gray-900 w-[10em] max-w-[10em]"><div class="<%= item.movement_type === 'transfer' ? 'text-indigo-700 bg-indigo-50 border border-indigo-200' : item.movement_type === 'add' ? 'text-green-700 bg-green-50 border border-green-200' : item.movement_type === 'remove' ? 'text-red-700 bg-red-50 border border-red-200' : 'text-gray-700 bg-gray-50 border border-gray-200' %>block mx-auto w-max rounded-md px-2 py-1"><%= item.movement_type %></div></td>
+                      <!-- movement type -->
+                      <td class="table-data text-sm text-center text-gray-900 w-[10em] max-w-[10em]"><%= item.from_store_name %></td>
+                      <td class="table-data text-sm text-center text-gray-900 w-[10em] max-w-[10em]"><%= item.to_store_name %></td>
+                      <td class="table-data text-sm text-right text-gray-900 w-[10em] max-w-[10em]"><%= item.quantity %></td>
+                      <td class="table-data text-sm text-right text-gray-900 w-[10em] max-w-[10em]"><%= new Date(item.movement_date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })  %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
   </main>
 
   
