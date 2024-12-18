@@ -1,7 +1,10 @@
 const { Router } = require("express");
 const productRouter = Router();
 const productsController = require("../controllers/productsController");
-const { validateNewProduct } = require("../controllers/productsController");
+const {
+  validateNewProduct,
+  validateDeleteProduct,
+} = require("../controllers/productsController");
 const multer = require("multer");
 const path = require("path");
 
@@ -49,6 +52,12 @@ productRouter.post(
   upload.single("image"),
   validateNewProduct,
   productsController.postEditProduct
+);
+
+productRouter.post(
+  "/delete/:id",
+  validateDeleteProduct,
+  productsController.deleteProduct
 );
 
 module.exports = productRouter;

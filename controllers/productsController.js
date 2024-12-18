@@ -10,8 +10,9 @@ const {
   removeProduct,
   updateProduct,
   getStoreInventory,
+  insertIntoItemMovements,
 } = require("../db/db_utilities");
-const { body, validationResult } = require("express-validator");
+const { body, validationResult, check } = require("express-validator");
 const { getArrayOfIdAndName } = require("../public/js/utilities.js");
 
 const validateNewProduct = [
@@ -33,6 +34,10 @@ const validateNewProduct = [
   body("category").notEmpty().withMessage("Category is required"),
   body("supplier").notEmpty().withMessage("Supplier is required"),
   body("description").optional(),
+];
+
+const validateDeleteProduct = [
+  check("deletePassword").notEmpty().withMessage("Password is required"),
 ];
 
 const getProducts = async (req, res, next) => {
@@ -158,17 +163,36 @@ const getProductById = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  const { deletePassword } = req.body;
+  console.log(id);
+  const { deletePassword, quantity } = req.body;
 
   if (!deletePassword) {
     return res.status(400).send("Password is required");
   }
 
   if (deletePassword === process.env.ADMIN_PASSWORD) {
-    await removeProduct(id);
+    let currentPage = req.query.page || 1;
+
+    const removed = await removeProduct(id);
+    if (!removed) {
+      return res
+        .status(400)
+        .send(
+          "Product is still referenced in store_items and cannot be deleted until it is removed from store_items."
+        );
+    }
+
+    // insert into item movements
+    await insertIntoItemMovements(
+      parseInt(id),
+      9,
+      null,
+      parseInt(quantity),
+      "remove",
+      `Removed from inventory`
+    );
 
     // get current page
-    let currentPage = req.query.page || 1;
 
     res.redirect(`/products?page=${currentPage}`);
   } else {
@@ -237,6 +261,7 @@ module.exports = {
   getNewProduct,
   postNewProduct,
   validateNewProduct,
+  validateDeleteProduct,
   getProductById,
   deleteProduct,
   getEditProduct,

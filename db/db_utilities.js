@@ -203,10 +203,16 @@ const getItemById = async (id) => {
 
 // delete product
 const removeProduct = async (id) => {
-  const query = "DELETE FROM items WHERE id = $1";
-  const value = [id];
-  const result = await pool.query(query, value);
-  return result.rows[0];
+  const checkQuery = "SELECT COUNT(*) FROM store_items WHERE item_id = $1";
+  const { rows } = await pool.query(checkQuery, [id]);
+
+  if (parseInt(rows[0].count, 10) > 0) {
+    return false;
+  }
+
+  const deleteQuery = "DELETE FROM items WHERE id = $1";
+  const result = await pool.query(deleteQuery, [id]);
+  return result.rowCount > 0; // Return a success indicator
 };
 
 // edit product
