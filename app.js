@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const multer = require("multer");
+const path = require("path");
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const categoriesRouter = require("./routes/categoriesRouter");
 const suppliersRouter = require("./routes/suppliersRouter");
 const storesRouter = require("./routes/storesRouter");
 const itemMovementsRouter = require("./routes/itemMovementsRouter");
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
