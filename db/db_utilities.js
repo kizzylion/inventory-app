@@ -70,15 +70,11 @@ const getQuantityDistributionAcrossStores = async () => {
 // recent 5  items in inventory
 const getRecentItemsInInventory = async () => {
   const result = await pool.query(
-    "SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier FROM items JOIN categories ON items.category_id = categories.id JOIN suppliers ON items.supplier_id = suppliers.id ORDER BY items.id ASC LIMIT 5"
-  );
-  return result.rows;
-};
-
-// recent 5 movements
-const getRecentMovements = async () => {
-  const result = await pool.query(
-    "SELECT item_movements.*, items.name as item_name, items.image as item_image, from_stores.name as from_store_name, to_stores.name as to_store_name, item_movements.quantity as quantity, item_movements.movement_date as movement_date, item_movements.movement_type as movement_type, item_movements.description as description FROM item_movements JOIN items ON item_movements.item_id = items.id JOIN stores AS from_stores ON item_movements.from_store_id = from_stores.id JOIN stores AS to_stores ON item_movements.to_store_id = to_stores.id ORDER BY movement_date DESC LIMIT 5"
+    `SELECT items.*, items.image AS image_base64, categories.name as category, suppliers.name as supplier
+     FROM items 
+     JOIN categories ON items.category_id = categories.id 
+     JOIN suppliers ON items.supplier_id = suppliers.id 
+     ORDER BY items.date_created DESC LIMIT 5`
   );
   return result.rows;
 };
@@ -434,6 +430,18 @@ const insertIntoItemMovements = async (
   ];
   const result = await pool.query(query, value);
   return result.rows[0];
+};
+
+// recent 5 movements
+const getRecentMovements = async () => {
+  const query = `SELECT item_movements.*, items.name as item_name, items.image as item_image, from_stores.name as from_store_name, to_stores.name as to_store_name, item_movements.quantity as quantity, item_movements.movement_date as movement_date, item_movements.movement_type as movement_type, item_movements.description as description 
+    FROM item_movements 
+    LEFT JOIN items ON item_movements.item_id = items.id 
+    LEFT JOIN stores AS from_stores ON item_movements.from_store_id = from_stores.id 
+    LEFT JOIN stores AS to_stores ON item_movements.to_store_id = to_stores.id 
+    ORDER BY movement_date DESC LIMIT 5`;
+  const result = await pool.query(query);
+  return result.rows;
 };
 
 // get item movements
