@@ -7,18 +7,19 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(express.static(path.join(__dirname, "public")));
+app.set("view engine", "ejs");
+app.set("views", "./views");
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const indexRouter = require("./routes/indexRouter");
 const productsRouter = require("./routes/productsRouter");
 const categoriesRouter = require("./routes/categoriesRouter");
 const suppliersRouter = require("./routes/suppliersRouter");
 const storesRouter = require("./routes/storesRouter");
 const itemMovementsRouter = require("./routes/itemMovementsRouter");
-app.use(express.static(path.join(__dirname, "public")));
-
-app.set("view engine", "ejs");
-app.set("views", "./views");
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/products", productsRouter);
