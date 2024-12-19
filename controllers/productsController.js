@@ -104,10 +104,13 @@ const getNewProduct = async (req, res) => {
   let allProducts = await getAllProductsWithCategoryAndSupplier();
 
   // get array of distinct categories.name and categories_id from all products
-  let categories = getArrayOfIdAndName(allProducts, "category_id", "category");
+  // let categories = getArrayOfIdAndName(allProducts, "category_id", "category");
+  let categories = await getAllCategories();
+  console.log(categories);
 
   // get array of distinct suppliers.name and suppliers_id
-  let suppliers = getArrayOfIdAndName(allProducts, "supplier_id", "supplier");
+  // let suppliers = getArrayOfIdAndName(allProducts, "supplier_id", "supplier");
+  let suppliers = await getAllSuppliers();
 
   res.render("new", { categories, suppliers });
 };
